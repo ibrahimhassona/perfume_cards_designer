@@ -111,7 +111,7 @@
             align-items: center;
             gap: 10px;
             flex: 1;
-            max-width: 640px;
+            max-width: 780px;
             justify-content: center;
         }
 
@@ -122,15 +122,55 @@
             flex: 1;
         }
 
-        .header-presets-box .preset-input-wrap {
-            flex: 1;
-            margin-bottom: 0;
+        .header-presets-box .preset-select-wrap {
+            flex: 1.5;
+            min-width: 175px;
+            position: relative;
         }
 
-        .header-presets-box input {
+        .header-presets-box select {
+            width: 100%;
             height: 36px;
             font-size: 0.82rem;
             border-radius: 8px;
+            background: var(--input-bg);
+            border: 1px solid rgba(212, 164, 40, 0.4);
+            color: #f5e6b8;
+            font-family: var(--font-body);
+            font-weight: 600;
+            padding: 0 10px 0 28px;
+            cursor: pointer;
+            outline: none;
+            direction: rtl;
+            transition: all 0.2s ease;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23d4a428' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: 10px center;
+        }
+
+        .header-presets-box select:focus {
+            border-color: var(--panel-accent);
+            box-shadow: 0 0 0 2px rgba(212, 164, 40, 0.2);
+        }
+
+        .header-presets-box select option,
+        .header-presets-box select optgroup {
+            background: #111118;
+            color: #ffffff;
+            font-size: 0.84rem;
+            padding: 6px;
+        }
+
+        .btn-sm.btn-new {
+            background: rgba(34, 197, 94, 0.12);
+            border-color: rgba(34, 197, 94, 0.35);
+            color: #86efac;
+        }
+        .btn-sm.btn-new:hover {
+            background: rgba(34, 197, 94, 0.25);
+            border-color: #22c55e;
+            color: #ffffff;
         }
 
         .header-actions {
@@ -535,13 +575,16 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 8px;
             background: rgba(212, 164, 40, 0.06);
             border: 1px solid rgba(212, 164, 40, 0.2);
             border-radius: 8px;
-            padding: 7px 10px;
-            margin-top: 10px;
+            padding: 0 10px;
+            height: 36px;
+            margin: 0;
             font-size: 0.73rem;
             color: var(--panel-text-muted);
+            white-space: nowrap;
             transition: all 0.3s ease;
         }
 
@@ -1851,6 +1894,16 @@
             font-weight: 700;
         }
 
+        .card-website {
+            font-family: 'Tajawal', sans-serif;
+            font-size: 9.5px;
+            color: var(--card-accent);
+            opacity: 0.85;
+            letter-spacing: 0.5px;
+            direction: ltr;
+            font-weight: 500;
+        }
+
         .card-date {
             font-size: 11px;
             color: var(--card-text-sec);
@@ -1933,8 +1986,10 @@
             .header-presets-box {
                 min-width: 0;
             }
-            .header-presets-box .preset-input-wrap { min-width: 0; }
-            .header-presets-box input { min-width: 0; width: 100%; }
+            .header-presets-box .preset-input-wrap,
+            .header-presets-box .preset-select-wrap { min-width: 0; flex: 1; }
+            .header-presets-box input,
+            .header-presets-box select { min-width: 0; width: 100%; }
             .storage-status-bar { width: 100%; justify-content: space-between; }
             .mobile-drawer-actions { display: flex; gap: 6px; }
             .mobile-drawer-btn {
@@ -2007,23 +2062,27 @@
 
             <div class="header-center-presets">
                 <div class="header-presets-box">
-                    <div class="preset-input-wrap">
-                        <input type="text" id="preset-input" list="presets-datalist" placeholder="اكتب اسم العطر أو اختر قالباً..." autocomplete="off" oninput="onPresetInputChanged()">
-                        <datalist id="presets-datalist"></datalist>
+                    <div class="preset-select-wrap">
+                        <select id="saved-perfumes-select" onchange="onSavedPerfumeSelected(this.value)">
+                            <option value="">📜 قائمة العطور المحفوظة...</option>
+                        </select>
                     </div>
                     <button type="button" class="btn-sm btn-save" onclick="saveCurrentAsPreset()" title="حفظ العطر الحالي في LocalStorage">
-                        💾 حفظ
+                        💾 حفظ العطر
                     </button>
-                    <button type="button" class="btn-sm btn-danger" onclick="deleteCurrentPreset()" title="حذف العطر المحدد من LocalStorage">
+                    <button type="button" class="btn-sm btn-new" onclick="createNewPerfume()" title="تصميم عطر جديد">
+                        ➕ عطر جديد
+                    </button>
+                    <button type="button" class="btn-sm btn-danger" onclick="deleteCurrentPreset()" title="حذف العطر المحدد من المحفوظات">
                         🗑️ حذف
                     </button>
                 </div>
                 <div class="storage-status-bar" id="storage-status-bar">
                     <div class="storage-status-left">
                         <span class="status-indicator-dot" id="status-dot"></span>
-                        <span id="storage-status-text">تخزين تلقائي</span>
+                        <span id="storage-status-text">الحفظ يدوي (اضغط حفظ للتخزين)</span>
                     </div>
-                    <span class="storage-count-pill" id="storage-count-pill">٦ عطور</span>
+                    <span class="storage-count-pill" id="storage-count-pill">٥ عطور</span>
                 </div>
             </div>
 
@@ -2141,6 +2200,7 @@
                         <!-- Footer -->
                         <div class="card-bottom">
                             <span class="card-signature" id="card-signature"><bdi>— عطور إبراهيم الهاشمي —</bdi></span>
+                            <span class="card-website" id="card-website"><bdi>https://www.ibrahimelhashimy.com</bdi></span>
                             <span class="card-date" id="card-date" style="display: none;"></span>
                         </div>
                     </div>
@@ -2253,7 +2313,7 @@
                                 </div>
                                 <div class="form-group" style="flex: 1.4; margin-bottom: 0;">
                                     <div class="aging-status-pills" style="margin-top: 0; gap: 4px;">
-                                        <button type="button" class="status-pill status-pill-warn" id="pill-warn" onclick="setAgingStatus('ليس أفضل أداء')">ليس أفضل أداء</button>
+                                        <button type="button" class="status-pill status-pill-warn" id="pill-warn" onclick="setAgingStatus('ليس الأفضل حالياً')">ليس الأفضل حالياً</button>
                                         <button type="button" class="status-pill status-pill-mid" id="pill-mid" onclick="setAgingStatus('متوسط')">متوسط</button>
                                         <button type="button" class="status-pill status-pill-good" id="pill-good" onclick="setAgingStatus('جيد')">جيد</button>
                                     </div>
@@ -2279,11 +2339,15 @@
                                 </div>
                             </div>
                             <div class="form-row" style="margin-bottom: 0; align-items: flex-end;">
-                                <div class="form-group" style="flex: 1.3; margin-bottom: 0;">
+                                <div class="form-group" style="flex: 1.1; margin-bottom: 0;">
                                     <label>اسم البراند / التوقيع</label>
                                     <input type="text" id="input-brand" value="عطور إبراهيم الهاشمي" oninput="updateCard()">
                                 </div>
-                                <div class="form-group" style="flex: 0.9; margin-bottom: 0;">
+                                <div class="form-group" style="flex: 1.2; margin-bottom: 0;">
+                                    <label>الموقع الخاص بالبراند</label>
+                                    <input type="text" id="input-website" value="https://www.ibrahimelhashimy.com" placeholder="https://www.ibrahimelhashimy.com" style="direction: ltr; font-size: 0.82rem;" oninput="updateCard()">
+                                </div>
+                                <div class="form-group" style="flex: 0.8; margin-bottom: 0;">
                                     <label>تاريخ الكارت</label>
                                     <input type="date" id="input-date" oninput="updateCard()">
                                 </div>
@@ -2433,19 +2497,64 @@
         }
 
         function getAllPresets() {
-            return [...defaultPresets, ...getCustomPresets()];
+            const customs = getCustomPresets();
+            const customNames = new Set(customs.map(c => c.name.trim().toLowerCase()));
+            const defaults = defaultPresets.filter(d => !customNames.has(d.name.trim().toLowerCase()));
+            return [...customs, ...defaults];
         }
 
-        // ─── Render Presets into Datalist & Storage Status ───
+        // ─── Render Presets into Dropdown Select & Storage Status ───
         function renderPresetsUI() {
-            const datalist = document.getElementById('presets-datalist');
-            if (datalist) {
-                datalist.innerHTML = '';
-                getAllPresets().forEach(p => {
+            const select = document.getElementById('saved-perfumes-select');
+            if (!select) return;
+
+            const customs = getCustomPresets();
+            const currentName = (document.getElementById('input-name')?.value || '').trim();
+
+            select.innerHTML = '';
+
+            // Default placeholder option
+            const defaultOpt = document.createElement('option');
+            defaultOpt.value = '';
+            defaultOpt.textContent = `📜 اختر من العطور المحفوظة (${customs.length + defaultPresets.length})...`;
+            select.appendChild(defaultOpt);
+
+            // Group 1: Custom Added Perfumes (if any)
+            if (customs.length > 0) {
+                const customGroup = document.createElement('optgroup');
+                customGroup.label = '⭐ عطورك المضافة المحفوظة';
+                customs.forEach(p => {
                     const opt = document.createElement('option');
                     opt.value = p.name;
-                    datalist.appendChild(opt);
+                    opt.textContent = `⭐ ${p.name}`;
+                    if (currentName && p.name.trim().toLowerCase() === currentName.toLowerCase()) {
+                        opt.selected = true;
+                    }
+                    customGroup.appendChild(opt);
                 });
+                select.appendChild(customGroup);
+            }
+
+            // Group 2: Built-in Default Presets
+            const defGroup = document.createElement('optgroup');
+            defGroup.label = '🏛️ العطور الأساسية الجاهزة';
+            defaultPresets.forEach(p => {
+                if (customs.some(c => c.name.trim().toLowerCase() === p.name.trim().toLowerCase())) return;
+                const opt = document.createElement('option');
+                opt.value = p.name;
+                opt.textContent = p.name;
+                if (currentName && p.name.trim().toLowerCase() === currentName.toLowerCase()) {
+                    opt.selected = true;
+                }
+                defGroup.appendChild(opt);
+            });
+            if (defGroup.children.length > 0) {
+                select.appendChild(defGroup);
+            }
+
+            // If no match selected, keep placeholder selected
+            if (!currentName || !getAllPresets().some(p => p.name.trim().toLowerCase() === currentName.toLowerCase())) {
+                defaultOpt.selected = true;
             }
 
             // Update storage count badge
@@ -2453,6 +2562,12 @@
             if (countPill) {
                 countPill.textContent = toAr(getAllPresets().length) + ' عطور';
             }
+        }
+
+        // ─── Event: When user selects a perfume from the dropdown ───
+        function onSavedPerfumeSelected(name) {
+            if (!name) return;
+            loadPreset(name);
         }
 
         // ─── Collect Current Card State ───
@@ -2472,22 +2587,22 @@
                 currentAgeNote: document.getElementById('input-current-age-note').value,
                 message: document.getElementById('input-message').value,
                 brand: document.getElementById('input-brand').value,
+                website: document.getElementById('input-website') ? document.getElementById('input-website').value : 'https://www.ibrahimelhashimy.com',
                 date: document.getElementById('input-date').value,
                 showDate: document.getElementById('toggle-date').classList.contains('active'),
                 themeIndex: typeof currentThemeIndex === 'number' ? currentThemeIndex : 0,
-                themeId: (themes[currentThemeIndex] && themes[currentThemeIndex].id) || 'pearl-gold',
+                themeId: (themes[currentThemeIndex] && themes[currentThemeIndex].id) || 'charismatic',
                 nameSize: document.getElementById('input-name-size') ? document.getElementById('input-name-size').value : 32,
                 msgSize: document.getElementById('input-msg-size') ? document.getElementById('input-msg-size').value : 16,
                 savedAt: new Date().toISOString()
             };
         }
 
-        // ─── Apply Card Data to Inputs & Card ───
-        function applyCardData(data, shouldAutoSave = false) {
+        // ─── Apply Card Data to Inputs & Card (Manual Load) ───
+        function applyCardData(data) {
             if (!data) return;
             if (data.name !== undefined) {
                 document.getElementById('input-name').value = data.name;
-                document.getElementById('preset-input').value = data.name;
             }
             if (data.inspired !== undefined) document.getElementById('input-inspired').value = data.inspired;
             if (data.company !== undefined) document.getElementById('input-company').value = data.company;
@@ -2500,17 +2615,22 @@
             if (data.agingNote !== undefined) document.getElementById('input-aging-note').value = data.agingNote;
             if (data.currentAge !== undefined) document.getElementById('input-current-age').value = data.currentAge;
             if (data.currentAgeNote !== undefined) {
-                if (!['ليس أفضل أداء', 'متوسط', 'جيد'].includes(data.currentAgeNote.trim())) {
+                let noteVal = data.currentAgeNote.trim();
+                if (noteVal === 'ليس أفضل أداء') noteVal = 'ليس الأفضل حالياً';
+                if (!['ليس الأفضل حالياً', 'متوسط', 'جيد'].includes(noteVal)) {
                     const evaluated = evaluateAgingStatus(data.currentAge, data.agingFrom, data.agingTo);
                     document.getElementById('input-current-age-note').value = evaluated || 'متوسط';
                 } else {
-                    document.getElementById('input-current-age-note').value = data.currentAgeNote;
+                    document.getElementById('input-current-age-note').value = noteVal;
                 }
             } else if (data.currentAge !== undefined) {
                 autoEvaluateAgingStatus();
             }
             if (data.message !== undefined) document.getElementById('input-message').value = data.message;
             if (data.brand !== undefined) document.getElementById('input-brand').value = data.brand;
+            if (data.website !== undefined && document.getElementById('input-website')) {
+                document.getElementById('input-website').value = data.website;
+            }
             if (data.date !== undefined) document.getElementById('input-date').value = data.date;
             document.getElementById('toggle-date').classList.toggle('active', !!data.showDate);
             if (data.nameSize !== undefined) {
@@ -2531,61 +2651,13 @@
                 }
             }
             if (typeof data.themeIndex === 'number' && data.themeIndex >= 0 && data.themeIndex < themes.length) {
-                selectTheme(data.themeIndex, false);
+                selectTheme(data.themeIndex);
             } else if (data.themeId) {
                 const idx = themes.findIndex(t => t.id === data.themeId);
-                if (idx >= 0) selectTheme(idx, false);
+                if (idx >= 0) selectTheme(idx);
             }
 
-            updateCard(shouldAutoSave);
-        }
-
-        // ─── Auto-Save Debouncer & Performer ───
-        let autoSaveTimer = null;
-        function triggerAutoSave() {
-            const dot = document.getElementById('status-dot');
-            if (dot) dot.classList.add('saving');
-            clearTimeout(autoSaveTimer);
-            autoSaveTimer = setTimeout(performAutoSave, 400);
-        }
-
-        function performAutoSave() {
-            const cardState = getCurrentCardState();
-            try {
-                // 1. Save active card session to LocalStorage
-                localStorage.setItem('perfume_active_session', JSON.stringify(cardState));
-
-                // 2. If perfume has a valid name, auto-save/update it in the saved presets database
-                if (cardState.name && cardState.name.length >= 2) {
-                    let custom = getCustomPresets();
-                    const existingIdx = custom.findIndex(p => p.name.trim().toLowerCase() === cardState.name.toLowerCase());
-                    if (existingIdx >= 0) {
-                        custom[existingIdx] = { ...custom[existingIdx], ...cardState };
-                    } else {
-                        // Check if it's identical to default preset without edits
-                        const isDefault = defaultPresets.some(p => p.name.trim().toLowerCase() === cardState.name.toLowerCase());
-                        if (!isDefault) {
-                            custom.unshift(cardState);
-                        }
-                    }
-                    setCustomPresets(custom);
-                    renderPresetsUI();
-                }
-
-                // Update visual status bar
-                const dot = document.getElementById('status-dot');
-                if (dot) dot.classList.remove('saving');
-
-                const statusText = document.getElementById('storage-status-text');
-                if (statusText) {
-                    const now = new Date();
-                    const m = String(now.getMinutes()).padStart(2, '0');
-                    const s = String(now.getSeconds()).padStart(2, '0');
-                    statusText.innerHTML = `تم الحفظ تلقائياً في LocalStorage (<bdi>${toAr(now.getHours())}:${toAr(m)}:${toAr(s)}</bdi>)`;
-                }
-            } catch(e) {
-                console.error('AutoSave Error:', e);
-            }
+            updateCard();
         }
 
         // ─── Load Preset by Name ───
@@ -2594,40 +2666,63 @@
             const p = all.find(item => item.name.trim().toLowerCase() === name.trim().toLowerCase());
             if (!p) return false;
 
-            applyCardData(p, true);
-            showToast('✅ تم تحميل عطر: ' + p.name);
+            applyCardData(p);
+            renderPresetsUI();
+            showToast('✅ تم استدعاء عطر: ' + p.name);
             return true;
-        }
-
-        // ─── Event: When user types in Preset Input ───
-        function onPresetInputChanged() {
-            const inputVal = document.getElementById('preset-input').value.trim();
-            if (!inputVal) return;
-
-            // Check if exact match to an existing preset
-            const found = getAllPresets().find(p => p.name.trim().toLowerCase() === inputVal.toLowerCase());
-            if (found) {
-                loadPreset(found.name);
-            } else {
-                // User typing a new name -> sync with input-name and card
-                document.getElementById('input-name').value = inputVal;
-                updateCard();
-            }
         }
 
         // ─── Event: When user types in Perfume Name Input ───
         function onPerfumeNameInput(val) {
-            document.getElementById('preset-input').value = val;
             updateCard();
+            const select = document.getElementById('saved-perfumes-select');
+            if (select) {
+                const trimmed = (val || '').trim().toLowerCase();
+                const match = Array.from(select.options).find(o => o.value.trim().toLowerCase() === trimmed);
+                select.value = match ? match.value : '';
+            }
         }
 
-        // ─── Save Current as Preset (Manual Click) ───
+        // ─── Create New Perfume (Clear to start fresh) ───
+        function createNewPerfume() {
+            const freshData = {
+                name: 'عطر جديد',
+                inspired: '',
+                company: '',
+                notes: '',
+                sprays: 6,
+                method: 'متفرقات',
+                sprayNote: 'لأن الأتومايزر صغير',
+                agingFrom: 25,
+                agingTo: 45,
+                agingNote: 'لتعزيز ثبات العطر ونقاء النوتات العطرية',
+                currentAge: '1 يوم',
+                currentAgeNote: 'ليس الأفضل حالياً',
+                message: 'نتمنى لك تجربة عطرية فريدة تليق بذوقك الرفيع. عطرك هو توقيعك الخاص.',
+                brand: 'عطور إبراهيم الهاشمي',
+                website: 'https://www.ibrahimelhashimy.com',
+                date: '',
+                showDate: false,
+                nameSize: 32,
+                msgSize: 16
+            };
+            applyCardData(freshData);
+            renderPresetsUI();
+            const nameInput = document.getElementById('input-name');
+            if (nameInput) {
+                nameInput.focus();
+                nameInput.select();
+            }
+            showToast('✨ جاهز لتصميم عطر جديد! أدخل البيانات ثم اضغط (حفظ العطر)');
+        }
+
+        // ─── Save Current as Preset (MANUAL CLICK ONLY) ───
         function saveCurrentAsPreset() {
             const cardState = getCurrentCardState();
             const name = cardState.name;
             if (!name) {
                 showToast('⚠️ يرجى إدخال اسم العطر أولاً لحفظه');
-                document.getElementById('preset-input').focus();
+                document.getElementById('input-name')?.focus();
                 return;
             }
 
@@ -2635,47 +2730,58 @@
             const existingIdx = custom.findIndex(p => p.name.trim().toLowerCase() === name.toLowerCase());
             if (existingIdx >= 0) {
                 custom[existingIdx] = cardState;
-                showToast('🔄 تم تحديث العطر في LocalStorage: ' + name);
+                showToast('🔄 تم تحديث بيانات العطر في قائمتك: ' + name);
             } else {
                 custom.unshift(cardState);
-                showToast('💾 تم حفظ العطر في LocalStorage: ' + name);
+                showToast('💾 تم حفظ العطر في قائمتك بنجاح: ' + name);
             }
 
             setCustomPresets(custom);
             localStorage.setItem('perfume_active_session', JSON.stringify(cardState));
             renderPresetsUI();
-            performAutoSave();
+
+            // Update visual status bar
+            const dot = document.getElementById('status-dot');
+            if (dot) {
+                dot.classList.add('saving');
+                setTimeout(() => dot.classList.remove('saving'), 800);
+            }
+
+            const statusText = document.getElementById('storage-status-text');
+            if (statusText) {
+                const now = new Date();
+                const m = String(now.getMinutes()).padStart(2, '0');
+                const s = String(now.getSeconds()).padStart(2, '0');
+                statusText.innerHTML = `تم الحفظ يدوياً (<bdi>${toAr(now.getHours())}:${toAr(m)}:${toAr(s)}</bdi>)`;
+            }
         }
 
-        // ─── Delete Preset ───
+        // ─── Delete Preset (Manual Click) ───
         function deleteCurrentPreset() {
-            const name = (document.getElementById('preset-input').value || document.getElementById('input-name').value || '').trim();
+            const select = document.getElementById('saved-perfumes-select');
+            const name = (select?.value || document.getElementById('input-name')?.value || '').trim();
             if (!name) {
-                showToast('⚠️ حدد أو اكتب اسم العطر المراد حذفه');
+                showToast('⚠️ يرجى تحديد العطر المراد حذفه من القائمة');
                 return;
             }
 
             // Check if default
             const isDefault = defaultPresets.some(p => p.name.trim().toLowerCase() === name.toLowerCase());
             if (isDefault) {
-                showToast('ℹ️ هذا عطر أساسي، تمت استعادة إعداداته الافتراضية');
-                let custom = getCustomPresets().filter(p => p.name.trim().toLowerCase() !== name.toLowerCase());
-                setCustomPresets(custom);
-                renderPresetsUI();
+                showToast('ℹ️ هذا عطر أساسي افتراضي لا يمكن حذفه');
                 return;
             }
 
             let custom = getCustomPresets();
             const filtered = custom.filter(p => p.name.trim().toLowerCase() !== name.toLowerCase());
             if (filtered.length === custom.length) {
-                showToast('⚠️ لم يتم العثور على هذا العطر في المحفوظات');
+                showToast('⚠️ لم يتم العثور على هذا العطر في قائمتك المحفوظة');
                 return;
             }
 
             setCustomPresets(filtered);
             renderPresetsUI();
-            document.getElementById('preset-input').value = '';
-            showToast('🗑️ تم حذف العطر من LocalStorage: ' + name);
+            showToast('🗑️ تم حذف العطر من المحفوظات: ' + name);
         }
 
         // ─── Toggle Section ───
@@ -2689,7 +2795,7 @@
         }
 
         // ─── Update Card ───
-        function updateCard(shouldAutoSave = true) {
+        function updateCard() {
             const name = document.getElementById('input-name').value;
             const inspired = document.getElementById('input-inspired').value;
             const company = document.getElementById('input-company').value;
@@ -2735,7 +2841,7 @@
             // Aging status badge styling
             const cleanNote = (currentAgeNote || '').trim();
             let statusBadgeClass = 'status-default';
-            if (cleanNote === 'ليس أفضل أداء') {
+            if (cleanNote === 'ليس الأفضل حالياً' || cleanNote === 'ليس أفضل أداء') {
                 statusBadgeClass = 'status-warn';
             } else if (cleanNote === 'متوسط') {
                 statusBadgeClass = 'status-mid';
@@ -2752,6 +2858,20 @@
             }
             document.getElementById('card-signature').innerHTML = `<bdi>— ${escapeHtml(brand)} —</bdi>`;
 
+            // Website
+            const websiteInput = document.getElementById('input-website');
+            const website = websiteInput ? websiteInput.value : 'https://www.ibrahimelhashimy.com';
+            const websiteEl = document.getElementById('card-website');
+            if (websiteEl) {
+                if (website && website.trim()) {
+                    websiteEl.innerHTML = `<bdi>${escapeHtml(website.trim())}</bdi>`;
+                    websiteEl.style.display = '';
+                } else {
+                    websiteEl.innerHTML = '';
+                    websiteEl.style.display = 'none';
+                }
+            }
+
             // Date
             const dateEl = document.getElementById('card-date');
             if (dateEl) {
@@ -2762,11 +2882,6 @@
                     dateEl.innerHTML = '';
                     dateEl.style.display = 'none';
                 }
-            }
-
-            // Trigger auto-save to LocalStorage
-            if (shouldAutoSave !== false) {
-                triggerAutoSave();
             }
         }
 
@@ -2779,8 +2894,6 @@
         }
 
         // ─── Dynamic Aging Status Evaluation ───
-        // إذا كان عدد الأيام للعمر ليس من الفترة المحددة للتعتيق: "ليس أفضل أداء"
-        // إذا كان الأيام أكثر أو في الرينج: "متوسط" أو "جيد"
         function evaluateAgingStatus(currentAgeStr, fromStr, toStr) {
             const cur = parseDaysNumber(currentAgeStr);
             const min = parseDaysNumber(fromStr);
@@ -2792,7 +2905,7 @@
             const maxDays = max !== null ? Math.max(max, minDays) : minDays;
 
             if (cur < minDays) {
-                return 'ليس أفضل أداء';
+                return 'ليس الأفضل حالياً';
             } else if (maxDays > minDays && cur < (minDays + (maxDays - minDays) * 0.5)) {
                 return 'متوسط';
             } else {
@@ -2845,7 +2958,7 @@
             const pMid = document.getElementById('pill-mid');
             const pGood = document.getElementById('pill-good');
 
-            if (pWarn) pWarn.classList.toggle('active', clean === 'ليس أفضل أداء');
+            if (pWarn) pWarn.classList.toggle('active', clean === 'ليس الأفضل حالياً' || clean === 'ليس أفضل أداء');
             if (pMid) pMid.classList.toggle('active', clean === 'متوسط');
             if (pGood) pGood.classList.toggle('active', clean === 'جيد');
         }
@@ -2965,7 +3078,7 @@
             });
         }
 
-        function selectTheme(index, shouldAutoSave = true) {
+        function selectTheme(index) {
             if (index < 0) index = themes.length - 1;
             if (index >= themes.length) index = 0;
             currentThemeIndex = index;
@@ -3001,11 +3114,6 @@
             document.querySelectorAll('.theme-chip').forEach((chip, i) => {
                 chip.classList.toggle('active', i === index);
             });
-
-            // Trigger auto-save
-            if (shouldAutoSave && typeof triggerAutoSave === 'function') {
-                triggerAutoSave();
-            }
 
             if (window.matchMedia('(max-width: 768px)').matches) {
                 closeMobileDrawers();
@@ -3048,14 +3156,12 @@
             const val = document.getElementById('input-name-size').value;
             document.getElementById('name-size-val').textContent = val + 'px';
             cardEl.style.setProperty('--card-name-size', val + 'px');
-            if (typeof triggerAutoSave === 'function') triggerAutoSave();
         }
 
         function updateMsgSize() {
             const val = document.getElementById('input-msg-size').value;
             document.getElementById('msg-size-val').textContent = val + 'px';
             cardEl.querySelector('.card-message p').style.fontSize = val + 'px';
-            if (typeof triggerAutoSave === 'function') triggerAutoSave();
         }
 
         // ─── Zoom Controls ───
@@ -3229,11 +3335,6 @@
             btn.classList.add('loading');
             btn.disabled = true;
 
-            // Guarantee current state is saved to LocalStorage
-            if (typeof performAutoSave === 'function') {
-                performAutoSave();
-            }
-
             try {
                 await ensureExportLibraries();
                 let canvas = await captureCardCanvas();
@@ -3255,7 +3356,7 @@
                 link.click();
                 link.remove();
                 setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
-                showToast('✅ تم حفظ العطر في LocalStorage والصورة كـ PNG');
+                showToast('✅ تم تحميل بطاقة العطر كـ PNG بنجاح');
             } catch (err) {
                 console.error(err);
                 showToast(exportErrorMessage(err));
@@ -3286,7 +3387,7 @@
                 const data = JSON.parse(savedSession);
                 if (data && data.name) {
                     data.showDate = false;
-                    applyCardData(data, false);
+                    applyCardData(data);
                     sessionRestored = true;
                     showToast('🔄 تم استرجاع تصميمك المحفوظ في LocalStorage');
                 }
