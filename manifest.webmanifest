@@ -1,0 +1,21 @@
+{
+  "name": "مصمم كروت العطور",
+  "short_name": "كروت العطور",
+  "description": "تصميم وتصدير كروت عطور احترافية.",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#111118",
+  "theme_color": "#111118",
+  "icons": [
+    {
+      "src": "./logo.avif",
+      "sizes": "any",
+      "type": "image/avif",
+      "purpose": "any maskable"
+    }
+  ]
+}

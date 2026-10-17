@@ -1,0 +1,3324 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مصمم كروت العطور | عطور إبراهيم الهاشمي</title>
+    <meta name="description" content="أداة تصميم كروت منتجات العطور - عطور إبراهيم الهاشمي">
+    <meta name="theme-color" content="#111118">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="icon" href="./logo.avif" type="image/avif">
+    <link rel="apple-touch-icon" href="./logo.avif">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        /* ═══════════════════════════════════════════════
+           CSS Variables & Reset
+           ═══════════════════════════════════════════════ */
+        :root {
+            --panel-bg: #111118;
+            --panel-surface: #1a1a24;
+            --panel-border: #2a2a3a;
+            --panel-hover: #22222e;
+            --panel-text: #c8c8d4;
+            --panel-text-muted: #6e6e82;
+            --panel-accent: #d4a428;
+            --panel-accent-dim: rgba(212, 164, 40, 0.15);
+            --canvas-bg: #16161e;
+            --canvas-dot: rgba(255,255,255, 0.04);
+            --input-bg: #0e0e16;
+            --input-border: #2a2a3a;
+            --input-focus: #d4a428;
+            --font-display: 'Amiri', serif;
+            --font-body: 'Tajawal', sans-serif;
+            --panel-width: 360px;
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { height: 100%; }
+        body {
+            font-family: var(--font-body);
+            background: var(--canvas-bg);
+            color: var(--panel-text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        /* ═══════════════════════════════════════════════
+           App Layout (Unified Full-Width Workspace)
+           ═══════════════════════════════════════════════ */
+        .app {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            direction: rtl;
+            background-color: var(--canvas-bg);
+            background-image: radial-gradient(circle, var(--canvas-dot) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        /* ── Top Header Bar ── */
+        .app-top-header {
+            width: 100%;
+            background: rgba(17, 17, 24, 0.95);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--panel-border);
+            padding: 10px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .header-logo {
+            height: 38px;
+            width: auto;
+            border-radius: 6px;
+        }
+
+        .header-title-box h1 {
+            font-family: var(--font-display);
+            font-size: 1.15rem;
+            color: #f5e6b8;
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        .header-title-box p {
+            font-size: 0.72rem;
+            color: var(--panel-text-muted);
+            margin: 0;
+        }
+
+        .header-center-presets {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+            max-width: 640px;
+            justify-content: center;
+        }
+
+        .header-presets-box {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex: 1;
+        }
+
+        .header-presets-box .preset-input-wrap {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        .header-presets-box input {
+            height: 36px;
+            font-size: 0.82rem;
+            border-radius: 8px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .mobile-drawer-actions, .drawer-heading, .drawer-backdrop { display: none; }
+        .drawer-close { display: none; }
+
+        .header-btn {
+            height: 36px;
+            padding: 0 16px;
+            border-radius: 8px;
+            font-family: var(--font-body);
+            font-size: 0.84rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            border: none;
+            transition: all 0.25s ease;
+            white-space: nowrap;
+        }
+
+        .header-btn.png-btn {
+            background: linear-gradient(135deg, #d4a428, #b8860b);
+            color: #0a0a0a;
+        }
+
+        .header-btn.png-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px rgba(212, 164, 40, 0.4);
+        }
+
+        /* ── Editor Deck Below Design (Color-coded & Space-Optimized) ── */
+        .editor-deck-wrapper {
+            width: 100%;
+            max-width: 100%;
+            margin: 20px 0 28px;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        .editor-deck-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            align-items: stretch;
+            width: 100%;
+        }
+
+        .deck-card {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+            transition: all 0.25s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ── Distinct Background Colors for each section ── */
+        /* Part 1: Perfume Info - Luxury Warm Amber/Gold */
+        .deck-card.deck-card-info {
+            background: linear-gradient(175deg, rgba(38, 30, 16, 0.94) 0%, rgba(18, 14, 10, 0.98) 100%);
+            border: 1px solid rgba(212, 164, 40, 0.35);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(212, 164, 40, 0.2);
+        }
+        .deck-card.deck-card-info:hover {
+            border-color: rgba(212, 164, 40, 0.6);
+        }
+        .deck-card.deck-card-info .form-group label {
+            color: #e5b842;
+        }
+
+        /* Part 2: Usage & Aging - Deep Aromatic Emerald Green */
+        .deck-card.deck-card-usage {
+            background: linear-gradient(175deg, rgba(14, 34, 26, 0.94) 0%, rgba(8, 18, 14, 0.98) 100%);
+            border: 1px solid rgba(34, 197, 94, 0.35);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(34, 197, 94, 0.2);
+        }
+        .deck-card.deck-card-usage:hover {
+            border-color: rgba(34, 197, 94, 0.6);
+        }
+        .deck-card.deck-card-usage .form-group label {
+            color: #6ee7b7;
+        }
+
+        /* Part 3: Message & Identity - Royal Sapphire / Violet */
+        .deck-card.deck-card-brand {
+            background: linear-gradient(175deg, rgba(32, 20, 42, 0.94) 0%, rgba(16, 11, 24, 0.98) 100%);
+            border: 1px solid rgba(168, 85, 247, 0.35);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(168, 85, 247, 0.2);
+        }
+        .deck-card.deck-card-brand:hover {
+            border-color: rgba(168, 85, 247, 0.6);
+        }
+        .deck-card.deck-card-brand .form-group label {
+            color: #d8b4fe;
+        }
+
+        .deck-card-header {
+            display: none !important;
+        }
+
+        .deck-card-body {
+            padding: 8px 12px 6px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .section-body {
+            padding: 0 22px 16px;
+        }
+
+        /* ── Form Elements (Minimized gaps) ── */
+        .form-group {
+            margin-bottom: 5px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.72rem;
+            color: var(--panel-text-muted);
+            margin-bottom: 2px;
+            font-weight: 600;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="number"],
+        .form-group input[type="date"],
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 5px 8px;
+            background: rgba(0, 0, 0, 0.38);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 6px;
+            color: #f1f1f6;
+            font-family: var(--font-body);
+            font-size: 0.82rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            outline: none;
+            direction: rtl;
+            box-sizing: border-box;
+        }
+
+        .deck-card.deck-card-info input:focus,
+        .deck-card.deck-card-info textarea:focus,
+        .deck-card.deck-card-info select:focus {
+            border-color: #d4a428;
+            box-shadow: 0 0 0 2px rgba(212, 164, 40, 0.2);
+        }
+
+        .deck-card.deck-card-usage input:focus,
+        .deck-card.deck-card-usage textarea:focus,
+        .deck-card.deck-card-usage select:focus {
+            border-color: #22c55e;
+            box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2);
+        }
+
+        .deck-card.deck-card-brand input:focus,
+        .deck-card.deck-card-brand textarea:focus,
+        .deck-card.deck-card-brand select:focus {
+            border-color: #a855f7;
+            box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.2);
+        }
+
+        .form-group textarea {
+            min-height: 65px;
+            resize: vertical;
+            line-height: 1.6;
+        }
+
+        .form-group select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%236e6e82' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: 12px center;
+            padding-left: 30px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .form-row .form-group { flex: 1; }
+
+        /* ── Bottom Theme Dock (Horizontal Design Bar) ── */
+        .bottom-theme-dock {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: rgba(17, 17, 24, 0.94);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid var(--panel-border);
+            border-radius: 12px;
+            padding: 5px 14px;
+            margin-top: 6px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45), 0 0 1px rgba(212, 164, 40, 0.25);
+            max-width: 98%;
+            z-index: 10;
+        }
+
+        .theme-dock-nav {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding-left: 10px;
+            border-left: 1px solid var(--panel-border);
+            flex-shrink: 0;
+        }
+
+        .dock-nav-btn {
+            background: var(--panel-surface);
+            border: 1px solid var(--panel-border);
+            color: var(--panel-text);
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .dock-nav-btn:hover {
+            border-color: var(--panel-accent);
+            color: var(--panel-accent);
+            background: var(--panel-hover);
+        }
+
+        .dock-badge {
+            font-size: 0.72rem;
+            color: var(--panel-accent);
+            font-weight: 700;
+            min-width: 38px;
+            text-align: center;
+            user-select: none;
+        }
+
+        .theme-horizontal-grid {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .theme-chip {
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 8px;
+            padding: 6px 10px;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            user-select: none;
+            white-space: nowrap;
+        }
+
+        .theme-chip:hover {
+            border-color: var(--panel-accent);
+            background: var(--panel-hover);
+            transform: translateY(-1px);
+        }
+
+        .theme-chip.active {
+            border-color: var(--panel-accent);
+            background: rgba(212, 164, 40, 0.16);
+            box-shadow: 0 0 10px rgba(212, 164, 40, 0.25);
+            transform: translateY(-1px);
+        }
+
+        .theme-chip-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.3);
+            flex-shrink: 0;
+        }
+
+        .theme-chip-text {
+            font-size: 0.76rem;
+            color: var(--panel-text);
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .theme-chip.active .theme-chip-text {
+            color: #f5e6b8;
+            font-weight: 700;
+        }
+
+        /* ── Range Slider ── */
+        .range-group {
+            margin-bottom: 12px;
+        }
+
+        .range-group .range-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.78rem;
+            color: var(--panel-text-muted);
+            margin-bottom: 6px;
+        }
+
+        .range-group .range-value {
+            color: var(--panel-accent);
+            font-weight: 700;
+        }
+
+        .range-group input[type="range"] {
+            width: 100%;
+            height: 4px;
+            background: var(--input-border);
+            border-radius: 4px;
+            outline: none;
+            appearance: none;
+            cursor: pointer;
+        }
+
+        .range-group input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            width: 16px; height: 16px;
+            background: var(--panel-accent);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 6px rgba(212,164,40,0.4);
+        }
+
+        /* ── Preset Input & Buttons ── */
+        .preset-input-wrap {
+            position: relative;
+            margin-bottom: 8px;
+        }
+
+        .preset-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .btn-sm {
+            flex: 1;
+            padding: 8px 10px;
+            background: var(--panel-surface);
+            border: 1px solid var(--panel-border);
+            border-radius: 8px;
+            color: var(--panel-text);
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: var(--font-body);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .btn-sm:hover {
+            background: var(--panel-hover);
+            border-color: var(--panel-accent);
+            color: var(--panel-accent);
+        }
+
+        .btn-sm.btn-save {
+            background: rgba(212, 164, 40, 0.12);
+            border-color: rgba(212, 164, 40, 0.35);
+            color: #f5e6b8;
+        }
+
+        .btn-sm.btn-save:hover {
+            background: rgba(212, 164, 40, 0.25);
+            border-color: var(--panel-accent);
+        }
+
+        .btn-sm.btn-danger:hover {
+            border-color: #e74c3c;
+            color: #ff6b6b;
+            background: rgba(231, 76, 60, 0.1);
+        }
+
+        /* ── LocalStorage Status Bar ── */
+        .storage-status-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(212, 164, 40, 0.06);
+            border: 1px solid rgba(212, 164, 40, 0.2);
+            border-radius: 8px;
+            padding: 7px 10px;
+            margin-top: 10px;
+            font-size: 0.73rem;
+            color: var(--panel-text-muted);
+            transition: all 0.3s ease;
+        }
+
+        .storage-status-left {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-indicator-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #10b981;
+            box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
+            transition: all 0.3s;
+        }
+
+        .status-indicator-dot.saving {
+            background: #f59e0b;
+            box-shadow: 0 0 10px rgba(245, 158, 11, 0.8);
+            animation: pulseStatus 0.4s infinite alternate;
+        }
+
+        @keyframes pulseStatus {
+            from { transform: scale(0.9); opacity: 0.7; }
+            to { transform: scale(1.25); opacity: 1; }
+        }
+
+        .storage-count-pill {
+            background: rgba(255, 255, 255, 0.08);
+            color: #f5e6b8;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.7rem;
+        }
+
+        /* ── Toggle Switch ── */
+        .toggle-group {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .toggle-group label {
+            font-size: 0.78rem;
+            color: var(--panel-text-muted);
+            font-weight: 500;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 40px; height: 22px;
+            background: var(--input-border);
+            border-radius: 11px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .toggle-switch.active { background: var(--panel-accent); }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 3px; right: 3px;
+            width: 16px; height: 16px;
+            background: #fff;
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+
+        .toggle-switch.active::after { transform: translateX(-18px); }
+
+        /* ── Aging Status Quick Pills & Badge ── */
+        .aging-status-pills {
+            display: flex;
+            gap: 6px;
+            margin-top: 8px;
+            align-items: center;
+        }
+
+        .status-pill {
+            flex: 1;
+            padding: 6px 4px;
+            font-size: 0.74rem;
+            font-family: var(--font-body);
+            font-weight: 700;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 1px solid var(--panel-border);
+            background: var(--input-bg);
+            color: var(--panel-text-muted);
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .status-pill:hover {
+            border-color: rgba(255, 255, 255, 0.25);
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+
+        .status-pill.active.status-pill-warn {
+            background: rgba(220, 38, 38, 0.18);
+            border-color: #ef4444;
+            color: #fca5a5;
+            box-shadow: 0 0 10px rgba(239, 68, 68, 0.25);
+        }
+
+        .status-pill.active.status-pill-mid {
+            background: rgba(217, 119, 6, 0.18);
+            border-color: #f59e0b;
+            color: #fde68a;
+            box-shadow: 0 0 10px rgba(245, 158, 11, 0.25);
+        }
+
+        .status-pill.active.status-pill-good {
+            background: rgba(22, 163, 74, 0.18);
+            border-color: #22c55e;
+            color: #86efac;
+            box-shadow: 0 0 10px rgba(34, 197, 94, 0.25);
+        }
+
+        /* ── Aging Status & Perfume Age (Completely clean - NO border, NO background) ── */
+        #card-current-age,
+        #card-current-age-note,
+        #card-current-age-note *,
+        .age-status-badge,
+        .age-status-badge.status-warn,
+        .age-status-badge.status-mid,
+        .age-status-badge.status-good,
+        .instruction-item .inst-label,
+        .instruction-item .inst-top,
+        .instruction-item .inst-icon {
+            background: transparent !important;
+            background-color: transparent !important;
+            border: none !important;
+            outline: none !important;
+            box-shadow: none !important;
+            border-radius: 0 !important;
+        }
+
+        .age-status-badge {
+            display: inline-block;
+            padding: 0 !important;
+            margin: 0 !important;
+            font-size: 11px;
+            font-weight: 700;
+            line-height: 1.35;
+            white-space: nowrap;
+        }
+
+        .age-status-badge.status-warn {
+            color: #dc2626 !important;
+        }
+
+        .age-status-badge.status-mid {
+            color: #d97706 !important;
+        }
+
+        .age-status-badge.status-good {
+            color: #16a34a !important;
+        }
+
+        #perfume-card.theme-obsidian-glow .age-status-badge.status-warn {
+            color: #fca5a5 !important;
+            text-shadow: 0 0 6px rgba(239, 68, 68, 0.6);
+        }
+
+        #perfume-card.theme-obsidian-glow .age-status-badge.status-mid {
+            color: #fde68a !important;
+            text-shadow: 0 0 6px rgba(245, 158, 11, 0.6);
+        }
+
+        #perfume-card.theme-obsidian-glow .age-status-badge.status-good {
+            color: #86efac !important;
+            text-shadow: 0 0 6px rgba(34, 197, 94, 0.6);
+        }
+
+        .header-btn .spinner,
+        .export-btn .spinner {
+            display: none;
+            width: 15px; height: 15px;
+            border: 2px solid transparent;
+            border-top-color: currentColor;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+
+        .header-btn.loading .spinner,
+        .export-btn.loading .spinner { display: inline-block; }
+        .header-btn.loading .btn-text,
+        .export-btn.loading .btn-text { display: none; }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ═══════════════════════════════════════════════
+           Canvas Area
+           ═══════════════════════════════════════════════ */
+            .canvas-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            background-color: var(--canvas-bg);
+            background-image: radial-gradient(circle, var(--canvas-dot) 1px, transparent 1px);
+            background-size: 24px 24px;
+            padding: 4px 16px 4px;
+            position: relative;
+            overflow: auto;
+        }
+
+        .canvas-toolbar {
+            position: absolute;
+            top: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 10px;
+            padding: 3px 10px;
+            z-index: 10;
+        }
+
+        .canvas-toolbar button {
+            background: none;
+            border: none;
+            color: var(--panel-text-muted);
+            cursor: pointer;
+            font-size: 0.95rem;
+            padding: 3px 7px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .canvas-toolbar button:hover {
+            background: var(--panel-hover);
+            color: var(--panel-text);
+        }
+
+        .canvas-toolbar .zoom-label {
+            font-size: 0.78rem;
+            color: var(--panel-text-muted);
+            min-width: 40px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .card-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            margin-top: 18px;
+        }
+
+        .card-size-label {
+            font-size: 0.7rem;
+            color: var(--panel-text-muted);
+            letter-spacing: 1px;
+            margin-bottom: 0;
+        }
+
+        /* ═══════════════════════════════════════════════
+           The Perfume Card (Print-Ready)
+           ═══════════════════════════════════════════════ */
+        #perfume-card {
+            --card-bg: #0c0c0c;
+            --card-accent: #d4a428;
+            --card-accent-light: #f5e6b8;
+            --card-text: #f5e6b8;
+            --card-text-sec: #9a8a5e;
+            --card-name-size: 32px;
+
+            width: 720px;
+            height: 430px;
+            background: var(--card-bg, #0b0b0e);
+            border-radius: 4px;
+            position: relative;
+            direction: rtl;
+            font-family: 'Tajawal', 'Amiri', sans-serif;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 1px rgba(212,164,40,0.3);
+            transition: background 0.35s ease, border-color 0.35s ease;
+        }
+
+        /* Enforce continuous Arabic script & disable accidental selection */
+        #perfume-card,
+        #perfume-card * {
+            user-select: none !important;
+            -webkit-user-select: none !important;
+            -moz-user-select: none !important;
+            -ms-user-select: none !important;
+            letter-spacing: normal !important;
+            font-feature-settings: "liga" 1, "calt" 1, "kern" 1;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+        }
+
+        #perfume-card ::selection,
+        #perfume-card *::selection {
+            background: transparent !important;
+            color: inherit !important;
+        }
+
+        /* ══════════════ 8 RADICALLY DISTINCT LUXURY CARD STYLES ══════════════ */
+
+        /* ── Style 1: 🌟 لؤلؤ الذهب الملكي الكلاسيكي (Royal Pearl Classic) ── */
+        #perfume-card.theme-pearl-gold {
+            --card-bg: radial-gradient(ellipse at 50% 12%, rgba(255, 238, 185, 0.55) 0%, transparent 68%),
+                        radial-gradient(ellipse at 85% 85%, rgba(230, 195, 120, 0.25) 0%, transparent 55%),
+                        linear-gradient(145deg, #fffdfa 0%, #fbf6ec 50%, #f6ede0 100%);
+            --card-accent: #a8791c;
+            --card-accent-light: #7a550d;
+            --card-text: #1b1710;
+            --card-text-sec: #544937;
+            --guide-bg: rgba(255, 255, 255, 0.78);
+            --guide-border: rgba(168, 121, 28, 0.32);
+            --guide-divider: rgba(168, 121, 28, 0.22);
+            --notes-bg: rgba(255, 255, 255, 0.88);
+            --notes-border: rgba(168, 121, 28, 0.28);
+            --frame-border: 1px solid rgba(168, 121, 28, 0.5);
+            box-shadow: 0 20px 60px rgba(168, 121, 28, 0.16), 0 0 1px rgba(168, 121, 28, 0.4);
+        }
+        #perfume-card.theme-pearl-gold .card-frame {
+            border: 1px solid #b8861d;
+            box-shadow: inset 0 0 0 3px #fdfbf7, inset 0 0 0 4.5px rgba(184, 134, 29, 0.45);
+            border-radius: 4px;
+            top: 10px; left: 10px; right: 10px; bottom: 10px;
+        }
+        #perfume-card.theme-pearl-gold .card-corner {
+            width: 24px; height: 24px;
+        }
+        #perfume-card.theme-pearl-gold .corner-tr::before,
+        #perfume-card.theme-pearl-gold .corner-tl::before,
+        #perfume-card.theme-pearl-gold .corner-br::before,
+        #perfume-card.theme-pearl-gold .corner-bl::before {
+            background: #a8791c; height: 2px; width: 22px;
+        }
+        #perfume-card.theme-pearl-gold .corner-tr::after,
+        #perfume-card.theme-pearl-gold .corner-tl::after,
+        #perfume-card.theme-pearl-gold .corner-br::after,
+        #perfume-card.theme-pearl-gold .corner-bl::after {
+            background: #a8791c; width: 2px; height: 22px;
+        }
+        #perfume-card.theme-pearl-gold .card-subtitle-tag {
+            background: rgba(168, 121, 28, 0.08);
+            border: 1px solid rgba(168, 121, 28, 0.25);
+            border-radius: 12px;
+            padding: 2px 14px;
+            display: inline-block;
+            margin: 1px auto 3px;
+            color: #8b6214;
+        }
+        #perfume-card.theme-pearl-gold .card-perfume-name {
+            font-family: 'Amiri', serif;
+            font-weight: 700;
+            color: #1b1710;
+        }
+        #perfume-card.theme-pearl-gold .card-notes-strip {
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.88);
+            border: 1px solid rgba(168, 121, 28, 0.3);
+        }
+        #perfume-card.theme-pearl-gold .card-instructions-section {
+            border-radius: 6px;
+            border: 1px solid rgba(168, 121, 28, 0.32);
+            background: rgba(255, 255, 255, 0.78);
+        }
+
+        /* ── Style 2: 📜 وثيقة شهادة الأصالة الملكية (Imperial Formulation Certificate) ── */
+        #perfume-card.theme-imperial-certificate {
+            --card-bg: radial-gradient(ellipse at 50% 20%, rgba(245, 225, 170, 0.5) 0%, transparent 70%),
+                        linear-gradient(135deg, #fdfbf5 0%, #f7f1e1 50%, #eee4ce 100%);
+            --card-accent: #78521a;
+            --card-accent-light: #5f4106;
+            --card-text: #151109;
+            --card-text-sec: #473a26;
+            --guide-bg: rgba(255, 255, 255, 0.95);
+            --guide-border: #78521a;
+            --guide-divider: #78521a;
+            --notes-bg: rgba(255, 255, 255, 0.92);
+            --notes-border: #78521a;
+            --frame-border: 3px double #78521a;
+            box-shadow: 0 20px 60px rgba(120, 82, 26, 0.22), 0 0 1px rgba(120, 82, 26, 0.5);
+        }
+        #perfume-card.theme-imperial-certificate .card-frame {
+            border: 3px double #78521a;
+            box-shadow: inset 0 0 0 2px #f7f1e1, inset 0 0 0 3.5px #78521a, inset 0 0 0 7.5px #fdfbf5, inset 0 0 0 8.5px rgba(120, 82, 26, 0.4);
+            border-radius: 0;
+            top: 9px; left: 9px; right: 9px; bottom: 9px;
+        }
+        #perfume-card.theme-imperial-certificate .card-corner {
+            width: 30px; height: 30px;
+        }
+        #perfume-card.theme-imperial-certificate .corner-tr::before,
+        #perfume-card.theme-imperial-certificate .corner-tl::before,
+        #perfume-card.theme-imperial-certificate .corner-br::before,
+        #perfume-card.theme-imperial-certificate .corner-bl::before {
+            background: #78521a; height: 3px; width: 30px;
+        }
+        #perfume-card.theme-imperial-certificate .corner-tr::after,
+        #perfume-card.theme-imperial-certificate .corner-tl::after,
+        #perfume-card.theme-imperial-certificate .corner-br::after,
+        #perfume-card.theme-imperial-certificate .corner-bl::after {
+            background: #78521a; width: 3px; height: 30px;
+        }
+        #perfume-card.theme-imperial-certificate .card-brand-logo {
+            filter: sepia(0.8) contrast(1.15) brightness(0.92);
+        }
+        #perfume-card.theme-imperial-certificate .card-subtitle-tag {
+            background: linear-gradient(90deg, transparent, rgba(120, 82, 26, 0.16), transparent);
+            padding: 3px 20px;
+            border-top: 1.5px solid #78521a;
+            border-bottom: 1.5px solid #78521a;
+            border-left: none; border-right: none;
+            display: inline-block;
+            margin: 1px auto 4px;
+            font-weight: 700;
+            color: #553a0f;
+            letter-spacing: 0.8px;
+        }
+        #perfume-card.theme-imperial-certificate .card-perfume-name {
+            font-family: 'Amiri', serif;
+            font-weight: 900;
+            color: #120d05;
+            letter-spacing: 0.3px;
+        }
+        #perfume-card.theme-imperial-certificate .card-notes-strip {
+            border: 1.5px solid #78521a;
+            border-radius: 0;
+            background: rgba(255, 255, 255, 0.95);
+        }
+        #perfume-card.theme-imperial-certificate .card-instructions-section {
+            border: 2px solid #78521a;
+            border-radius: 0;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 2px 2px 0 rgba(120, 82, 26, 0.2);
+        }
+        #perfume-card.theme-imperial-certificate .inst-divider {
+            background: #78521a;
+            width: 1.5px;
+            opacity: 0.6;
+        }
+
+        /* ── Style 3: 💎 المينيماليست الفرنسي العصري (French Haute Parfumerie Minimalist) ── */
+        #perfume-card.theme-modern-minimalist {
+            --card-bg: #ffffff;
+            --card-accent: #111111;
+            --card-accent-light: #222222;
+            --card-text: #000000;
+            --card-text-sec: #555555;
+            --guide-bg: #fafafa;
+            --guide-border: #dedede;
+            --guide-divider: #e8e8e8;
+            --notes-bg: transparent;
+            --notes-border: transparent;
+            --frame-border: 1.5px solid #111111;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08), 0 0 1px rgba(0, 0, 0, 0.2);
+        }
+        #perfume-card.theme-modern-minimalist .card-frame {
+            border: 1.5px solid #111111;
+            box-shadow: none;
+            border-radius: 0;
+            top: 14px; left: 14px; right: 14px; bottom: 14px;
+        }
+        #perfume-card.theme-modern-minimalist .card-corner {
+            display: none !important;
+        }
+        #perfume-card.theme-modern-minimalist .card-brand-logo {
+            filter: grayscale(1) contrast(1.3);
+        }
+        #perfume-card.theme-modern-minimalist .card-brand-line {
+            background: #111111;
+            width: 32px;
+            height: 1.5px;
+            opacity: 0.9;
+        }
+        #perfume-card.theme-modern-minimalist .card-subtitle-tag {
+            letter-spacing: 2.5px;
+            font-size: 8.5px;
+            text-transform: uppercase;
+            color: #666666;
+            font-weight: 700;
+            border: none;
+            background: transparent;
+            padding: 0;
+        }
+        #perfume-card.theme-modern-minimalist .card-perfume-name {
+            font-family: 'Tajawal', sans-serif;
+            font-weight: 900;
+            letter-spacing: 0.8px;
+            color: #000000;
+        }
+        #perfume-card.theme-modern-minimalist .card-notes-strip {
+            border-radius: 0;
+            border-top: 1.5px solid #111111;
+            border-bottom: 1.5px solid #111111;
+            border-left: none;
+            border-right: none;
+            background: transparent;
+            padding: 4px 12px;
+        }
+        #perfume-card.theme-modern-minimalist .card-instructions-section {
+            border-radius: 0;
+            border: 1px solid #e0e0e0;
+            background: #fafafa;
+            box-shadow: none;
+        }
+        #perfume-card.theme-modern-minimalist .instruction-item .inst-value {
+            font-family: 'Tajawal', sans-serif;
+            font-weight: 800;
+            color: #111111;
+        }
+
+        /* ── Style 4: 📐 الأرت ديكو الهندسي الفاخر (Vintage 1920s Art Deco Glamour) ── */
+        #perfume-card.theme-art-deco {
+            --card-bg: radial-gradient(ellipse at 50% 15%, rgba(245, 210, 140, 0.5) 0%, transparent 65%),
+                        linear-gradient(135deg, #fbf7ee 0%, #f4ebd6 50%, #e8dac0 100%);
+            --card-accent: #9c6c19;
+            --card-accent-light: #6e490b;
+            --card-text: #1a1409;
+            --card-text-sec: #52422b;
+            --guide-bg: rgba(255, 255, 255, 0.88);
+            --guide-border: #9c6c19;
+            --guide-divider: #9c6c19;
+            --notes-bg: rgba(255, 255, 255, 0.9);
+            --notes-border: #9c6c19;
+            --frame-border: 2px solid #9c6c19;
+            box-shadow: 0 20px 60px rgba(156, 108, 25, 0.18), 0 0 1px rgba(156, 108, 25, 0.4);
+        }
+        #perfume-card.theme-art-deco .card-frame {
+            border: 2px solid #9c6c19;
+            box-shadow: inset 0 0 0 2px #fbf7ee, inset 0 0 0 4.5px #9c6c19, inset 0 0 0 7px #fbf7ee, inset 0 0 0 8.5px rgba(156, 108, 25, 0.35);
+            border-radius: 0;
+            top: 10px; left: 10px; right: 10px; bottom: 10px;
+        }
+        #perfume-card.theme-art-deco .card-corner {
+            width: 32px; height: 32px;
+        }
+        #perfume-card.theme-art-deco .corner-tr::before,
+        #perfume-card.theme-art-deco .corner-tl::before,
+        #perfume-card.theme-art-deco .corner-br::before,
+        #perfume-card.theme-art-deco .corner-bl::before {
+            background: #9c6c19;
+            height: 3px;
+            width: 32px;
+        }
+        #perfume-card.theme-art-deco .corner-tr::after,
+        #perfume-card.theme-art-deco .corner-tl::after,
+        #perfume-card.theme-art-deco .corner-br::after,
+        #perfume-card.theme-art-deco .corner-bl::after {
+            background: #9c6c19;
+            width: 3px;
+            height: 32px;
+        }
+        #perfume-card.theme-art-deco .card-subtitle-tag {
+            background: #9c6c19;
+            color: #fff8e8;
+            padding: 2px 18px;
+            font-weight: 700;
+            clip-path: polygon(8px 0%, calc(100% - 8px) 0%, 100% 50%, calc(100% - 8px) 100%, 8px 100%, 0% 50%);
+            display: inline-block;
+            margin: 1px auto 3px;
+        }
+        #perfume-card.theme-art-deco .card-instructions-section {
+            border-radius: 0;
+            border: 1.5px solid #9c6c19;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: inset 0 0 0 1px rgba(156, 108, 25, 0.2);
+        }
+        #perfume-card.theme-art-deco .inst-divider {
+            background: #9c6c19;
+            opacity: 0.55;
+            width: 1.5px;
+        }
+        #perfume-card.theme-art-deco .card-notes-strip {
+            border-radius: 0;
+            border: 1.5px solid #9c6c19;
+            background: rgba(255, 255, 255, 0.92);
+        }
+
+        /* ── Style 5: 🌿 الأرابيسك والزمرد الأندلسي (Moorish Palace Emerald Arch) ── */
+        #perfume-card.theme-andalusian-emerald {
+            --card-bg: radial-gradient(ellipse at 50% 12%, rgba(46, 160, 115, 0.35) 0%, transparent 65%),
+                        radial-gradient(ellipse at 80% 85%, rgba(212, 175, 55, 0.25) 0%, transparent 55%),
+                        linear-gradient(145deg, #f4faf6 0%, #e6f5ec 50%, #d4eedf 100%);
+            --card-accent: #0f5c38;
+            --card-accent-light: #083b23;
+            --card-text: #062416;
+            --card-text-sec: #225139;
+            --guide-bg: rgba(255, 255, 255, 0.92);
+            --guide-border: rgba(15, 92, 56, 0.45);
+            --guide-divider: rgba(15, 92, 56, 0.25);
+            --notes-bg: rgba(255, 255, 255, 0.94);
+            --notes-border: rgba(15, 92, 56, 0.38);
+            --frame-border: 2px solid #0f5c38;
+            box-shadow: 0 20px 60px rgba(15, 92, 56, 0.16), 0 0 1px rgba(15, 92, 56, 0.45);
+        }
+        #perfume-card.theme-andalusian-emerald .card-frame {
+            border: 2px solid #0f5c38;
+            box-shadow: inset 0 0 0 3px #f4faf6, inset 0 0 0 5px rgba(212, 175, 55, 0.65);
+            border-radius: 16px 16px 4px 4px;
+            top: 10px; left: 10px; right: 10px; bottom: 10px;
+        }
+        #perfume-card.theme-andalusian-emerald .card-corner {
+            width: 26px; height: 26px;
+        }
+        #perfume-card.theme-andalusian-emerald .corner-tr::before,
+        #perfume-card.theme-andalusian-emerald .corner-tl::before,
+        #perfume-card.theme-andalusian-emerald .corner-br::before,
+        #perfume-card.theme-andalusian-emerald .corner-bl::before {
+            background: #0f5c38; height: 2.5px; width: 26px;
+        }
+        #perfume-card.theme-andalusian-emerald .corner-tr::after,
+        #perfume-card.theme-andalusian-emerald .corner-tl::after,
+        #perfume-card.theme-andalusian-emerald .corner-br::after,
+        #perfume-card.theme-andalusian-emerald .corner-bl::after {
+            background: #0f5c38; width: 2.5px; height: 26px;
+        }
+        #perfume-card.theme-andalusian-emerald .card-subtitle-tag {
+            background: rgba(15, 92, 56, 0.1);
+            border: 1px solid rgba(15, 92, 56, 0.35);
+            border-radius: 14px;
+            padding: 2px 16px;
+            color: #0f5c38;
+            font-weight: 700;
+            display: inline-block;
+            margin: 1px auto 3px;
+        }
+        #perfume-card.theme-andalusian-emerald .card-perfume-name {
+            font-family: 'Amiri', serif;
+            font-weight: 700;
+            color: #062416;
+        }
+        #perfume-card.theme-andalusian-emerald .card-notes-strip {
+            background: rgba(255, 255, 255, 0.94);
+            border: 1.5px solid rgba(15, 92, 56, 0.4);
+            border-radius: 12px;
+        }
+        #perfume-card.theme-andalusian-emerald .card-instructions-section {
+            border-radius: 10px;
+            border: 1.5px solid rgba(15, 92, 56, 0.45);
+            background: rgba(255, 255, 255, 0.92);
+        }
+
+        /* ── Style 6: 📬 البرقية الملكية التاريخية (Vintage Royal Telegram & Airmail) ── */
+        #perfume-card.theme-royal-telegram {
+            --card-bg: linear-gradient(135deg, #faf6ee 0%, #f3ece0 50%, #eadecb 100%);
+            --card-accent: #785226;
+            --card-accent-light: #4e3314;
+            --card-text: #1d150b;
+            --card-text-sec: #524029;
+            --guide-bg: rgba(255, 255, 255, 0.92);
+            --guide-border: rgba(120, 82, 38, 0.45);
+            --guide-divider: rgba(120, 82, 38, 0.3);
+            --notes-bg: rgba(255, 255, 255, 0.92);
+            --notes-border: rgba(120, 82, 38, 0.38);
+            --frame-border: 2px dashed rgba(120, 82, 38, 0.55);
+            box-shadow: 0 20px 60px rgba(120, 82, 38, 0.16), 0 0 1px rgba(120, 82, 38, 0.38);
+        }
+        #perfume-card.theme-royal-telegram .card-frame {
+            border: 2px dashed rgba(120, 82, 38, 0.6);
+            box-shadow: inset 0 0 0 4px #faf6ee, inset 0 0 0 5.5px rgba(120, 82, 38, 0.3);
+            border-radius: 0;
+            top: 10px; left: 10px; right: 10px; bottom: 10px;
+        }
+        #perfume-card.theme-royal-telegram .card-corner {
+            width: 20px; height: 20px;
+        }
+        #perfume-card.theme-royal-telegram .corner-tr::before,
+        #perfume-card.theme-royal-telegram .corner-tl::before,
+        #perfume-card.theme-royal-telegram .corner-br::before,
+        #perfume-card.theme-royal-telegram .corner-bl::before {
+            background: #785226; height: 2px; width: 20px;
+        }
+        #perfume-card.theme-royal-telegram .corner-tr::after,
+        #perfume-card.theme-royal-telegram .corner-tl::after,
+        #perfume-card.theme-royal-telegram .corner-br::after,
+        #perfume-card.theme-royal-telegram .corner-bl::after {
+            background: #785226; width: 2px; height: 20px;
+        }
+        #perfume-card.theme-royal-telegram .card-subtitle-tag {
+            background: rgba(120, 82, 38, 0.12);
+            border: 1px dashed #785226;
+            border-radius: 0;
+            padding: 2px 14px;
+            font-family: monospace, 'Tajawal', sans-serif;
+            font-weight: 700;
+            color: #524029;
+            display: inline-block;
+            margin: 1px auto 3px;
+        }
+        #perfume-card.theme-royal-telegram .card-perfume-name {
+            font-family: 'Amiri', serif;
+            font-weight: 700;
+            color: #1d150b;
+        }
+        #perfume-card.theme-royal-telegram .card-instructions-section {
+            border: 1.5px dashed rgba(120, 82, 38, 0.5);
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 0;
+        }
+        #perfume-card.theme-royal-telegram .inst-divider {
+            border-right: 1.5px dashed rgba(120, 82, 38, 0.45);
+            background: transparent;
+            width: 1px;
+        }
+        #perfume-card.theme-royal-telegram .card-notes-strip {
+            border: 1.5px dashed rgba(120, 82, 38, 0.45);
+            border-radius: 0;
+            background: rgba(255, 255, 255, 0.92);
+        }
+
+        /* ── Style 7: 👑 الذهب الأسود والنيون المشع (Nocturnal Obsidian Velvet & 24K Glow) ── */
+        #perfume-card.theme-obsidian-glow {
+            --card-bg: radial-gradient(ellipse at 50% 12%, rgba(255, 210, 70, 0.35) 0%, transparent 65%),
+                        radial-gradient(ellipse at 80% 85%, rgba(212, 164, 40, 0.22) 0%, transparent 55%),
+                        #08080a;
+            --card-accent: #e5b338;
+            --card-accent-light: #fdf1cb;
+            --card-text: #fff4d1;
+            --card-text-sec: #c4b184;
+            --guide-bg: rgba(255, 255, 255, 0.04);
+            --guide-border: rgba(229, 179, 56, 0.45);
+            --guide-divider: rgba(229, 179, 56, 0.3);
+            --notes-bg: rgba(255, 255, 255, 0.05);
+            --notes-border: rgba(229, 179, 56, 0.35);
+            --frame-border: 1.5px solid rgba(229, 179, 56, 0.8);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.7), 0 0 25px rgba(229, 179, 56, 0.35);
+        }
+        #perfume-card.theme-obsidian-glow .card-frame {
+            border: 1.5px solid #e5b338;
+            box-shadow: 0 0 16px rgba(229, 179, 56, 0.45), inset 0 0 16px rgba(229, 179, 56, 0.2);
+            border-radius: 4px;
+            top: 10px; left: 10px; right: 10px; bottom: 10px;
+        }
+        #perfume-card.theme-obsidian-glow .card-corner {
+            width: 26px; height: 26px;
+        }
+        #perfume-card.theme-obsidian-glow .corner-tr::before,
+        #perfume-card.theme-obsidian-glow .corner-tl::before,
+        #perfume-card.theme-obsidian-glow .corner-br::before,
+        #perfume-card.theme-obsidian-glow .corner-bl::before {
+            background: #e5b338; height: 2px; width: 26px;
+            box-shadow: 0 0 10px #e5b338, 0 0 4px #ffd700;
+        }
+        #perfume-card.theme-obsidian-glow .corner-tr::after,
+        #perfume-card.theme-obsidian-glow .corner-tl::after,
+        #perfume-card.theme-obsidian-glow .corner-br::after,
+        #perfume-card.theme-obsidian-glow .corner-bl::after {
+            background: #e5b338; width: 2px; height: 26px;
+            box-shadow: 0 0 10px #e5b338, 0 0 4px #ffd700;
+        }
+        #perfume-card.theme-obsidian-glow .card-brand-logo {
+            filter: brightness(2.4) drop-shadow(0 0 14px rgba(255, 215, 60, 0.65));
+        }
+        #perfume-card.theme-obsidian-glow .card-subtitle-tag {
+            background: rgba(229, 179, 56, 0.12);
+            border: 1px solid rgba(229, 179, 56, 0.45);
+            border-radius: 12px;
+            color: #ffe685;
+            text-shadow: 0 0 8px rgba(255, 215, 60, 0.5);
+            padding: 2px 14px;
+            display: inline-block;
+            margin: 1px auto 3px;
+        }
+        #perfume-card.theme-obsidian-glow .card-perfume-name {
+            color: #fff4d1;
+            text-shadow: 0 0 14px rgba(255, 215, 60, 0.45);
+        }
+        #perfume-card.theme-obsidian-glow .card-instructions-section {
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(229, 179, 56, 0.45);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.6), inset 0 0 15px rgba(229, 179, 56, 0.08);
+        }
+        #perfume-card.theme-obsidian-glow .instruction-item .inst-value {
+            color: #fff4d1;
+            text-shadow: 0 0 8px rgba(255, 215, 60, 0.4);
+        }
+        #perfume-card.theme-obsidian-glow .inst-divider {
+            background: rgba(229, 179, 56, 0.35);
+            box-shadow: 0 0 6px rgba(229, 179, 56, 0.3);
+        }
+        #perfume-card.theme-obsidian-glow .card-notes-strip {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(229, 179, 56, 0.35);
+            border-radius: 4px;
+            backdrop-filter: blur(8px);
+        }
+
+        /* ── Style 8: 🌸 الحرير الوردي والذهب الإمبراطوري (Damask Rose Silk & Metallic Accents) ── */
+        #perfume-card.theme-rose-silk {
+            --card-bg: radial-gradient(ellipse at 50% 15%, rgba(255, 205, 220, 0.65) 0%, transparent 65%),
+                        radial-gradient(ellipse at 20% 85%, rgba(245, 185, 205, 0.35) 0%, transparent 55%),
+                        linear-gradient(145deg, #fffafa 0%, #fef0f3 50%, #f9e2e7 100%);
+            --card-accent: #b04662;
+            --card-accent-light: #7e273e;
+            --card-text: #210d14;
+            --card-text-sec: #5c3442;
+            --guide-bg: rgba(255, 255, 255, 0.9);
+            --guide-border: rgba(176, 70, 98, 0.4);
+            --guide-divider: rgba(176, 70, 98, 0.25);
+            --notes-bg: rgba(255, 255, 255, 0.94);
+            --notes-border: rgba(176, 70, 98, 0.35);
+            --frame-border: 2px solid rgba(176, 70, 98, 0.6);
+            box-shadow: 0 20px 60px rgba(176, 70, 98, 0.16), 0 0 1px rgba(176, 70, 98, 0.38);
+        }
+        #perfume-card.theme-rose-silk .card-frame {
+            border: 2px solid #b04662;
+            box-shadow: inset 0 0 0 3px #fffafa, inset 0 0 0 5px rgba(176, 70, 98, 0.3);
+            border-radius: 18px;
+            top: 10px; left: 10px; right: 10px; bottom: 10px;
+        }
+        #perfume-card.theme-rose-silk .card-corner {
+            width: 24px; height: 24px;
+        }
+        #perfume-card.theme-rose-silk .corner-tr::before,
+        #perfume-card.theme-rose-silk .corner-tl::before,
+        #perfume-card.theme-rose-silk .corner-br::before,
+        #perfume-card.theme-rose-silk .corner-bl::before {
+            background: #b04662; height: 2px; width: 24px;
+            border-radius: 2px;
+        }
+        #perfume-card.theme-rose-silk .corner-tr::after,
+        #perfume-card.theme-rose-silk .corner-tl::after,
+        #perfume-card.theme-rose-silk .corner-br::after,
+        #perfume-card.theme-rose-silk .corner-bl::after {
+            background: #b04662; width: 2px; height: 24px;
+            border-radius: 2px;
+        }
+        #perfume-card.theme-rose-silk .card-subtitle-tag {
+            background: rgba(176, 70, 98, 0.08);
+            border: 1px solid rgba(176, 70, 98, 0.3);
+            border-radius: 14px;
+            color: #922b46;
+            padding: 2px 16px;
+            display: inline-block;
+            margin: 1px auto 3px;
+        }
+        #perfume-card.theme-rose-silk .card-perfume-name {
+            font-family: 'Amiri', serif;
+            font-weight: 700;
+            color: #210d14;
+        }
+        #perfume-card.theme-rose-silk .card-instructions-section {
+            border-radius: 14px;
+            border: 1.5px solid rgba(176, 70, 98, 0.4);
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 20px rgba(176, 70, 98, 0.08);
+        }
+        #perfume-card.theme-rose-silk .card-notes-strip {
+            border-radius: 20px;
+            border: 1.5px solid rgba(176, 70, 98, 0.35);
+            background: rgba(255, 255, 255, 0.94);
+        }
+
+        /* ─── مجموعة شخصيات العطر: قوالب احترافية قابلة للطباعة ─── */
+        /* كريزماتك: أسود مخملي مع ذهب معتّق */
+        #perfume-card.theme-charismatic {
+            --card-bg: radial-gradient(ellipse at 50% -12%, rgba(201, 149, 55, .26), transparent 52%), linear-gradient(135deg, #11100f 0%, #050505 55%, #17120a 100%);
+            --card-accent: #c99a43; --card-accent-light: #f6df9a; --card-text: #fff7df; --card-text-sec: #cbb98f;
+            --guide-bg: rgba(255,255,255,.045); --guide-border: rgba(201,154,67,.55); --guide-divider: rgba(201,154,67,.32);
+            --notes-bg: rgba(201,154,67,.09); --notes-border: rgba(201,154,67,.45); --frame-border: 1px solid rgba(201,154,67,.82);
+            box-shadow: 0 20px 60px rgba(0,0,0,.66), 0 0 28px rgba(201,154,67,.22);
+        }
+        #perfume-card.theme-charismatic .card-frame { border: 1px solid #c99a43; box-shadow: inset 0 0 0 5px rgba(201,154,67,.07), inset 0 0 30px rgba(0,0,0,.4); border-radius: 3px; top: 11px; left: 11px; right: 11px; bottom: 11px; }
+        #perfume-card.theme-charismatic .card-corner { width: 28px; height: 28px; }
+        #perfume-card.theme-charismatic .card-corner::before, #perfume-card.theme-charismatic .card-corner::after { background: #e0b55b; box-shadow: 0 0 8px rgba(224,181,91,.42); }
+        #perfume-card.theme-charismatic .card-subtitle-tag { color: #f6df9a; border: 1px solid rgba(201,154,67,.55); background: rgba(201,154,67,.10); border-radius: 20px; padding: 3px 16px; display: inline-block; }
+        #perfume-card.theme-charismatic .card-brand-logo { filter: brightness(2.1) sepia(.35) drop-shadow(0 0 10px rgba(201,154,67,.3)); }
+        #perfume-card.theme-charismatic .card-perfume-name { font-family: 'Amiri', serif; color: #fff3cc; text-shadow: 0 2px 14px rgba(201,154,67,.28); }
+        #perfume-card.theme-charismatic .card-instructions-section, #perfume-card.theme-charismatic .card-notes-strip { border-color: rgba(201,154,67,.44); }
+
+        /* فريش منعش: ماء، حمضيات، وبياض نظيف */
+        #perfume-card.theme-fresh-breeze {
+            --card-bg: radial-gradient(circle at 14% 12%, rgba(255,255,255,.88) 0 4%, transparent 22%), radial-gradient(circle at 87% 84%, rgba(83,205,190,.27), transparent 38%), linear-gradient(135deg, #ecfbfa 0%, #dff5f4 48%, #d2e9f2 100%);
+            --card-accent: #087c83; --card-accent-light: #075d68; --card-text: #073b46; --card-text-sec: #326773;
+            --guide-bg: rgba(255,255,255,.72); --guide-border: rgba(8,124,131,.30); --guide-divider: rgba(8,124,131,.20);
+            --notes-bg: rgba(255,255,255,.76); --notes-border: rgba(8,124,131,.27); --frame-border: 1px solid rgba(8,124,131,.52);
+            box-shadow: 0 20px 60px rgba(8,124,131,.17);
+        }
+        #perfume-card.theme-fresh-breeze .card-frame { border: 1px solid rgba(8,124,131,.66); box-shadow: inset 0 0 0 4px rgba(255,255,255,.52), inset 0 0 0 5px rgba(8,124,131,.16); border-radius: 22px; top: 11px; left: 11px; right: 11px; bottom: 11px; }
+        #perfume-card.theme-fresh-breeze .card-corner { display: none; }
+        #perfume-card.theme-fresh-breeze .card-subtitle-tag { color: #087c83; background: rgba(255,255,255,.58); border: 1px solid rgba(8,124,131,.28); border-radius: 18px; padding: 3px 17px; display: inline-block; }
+        #perfume-card.theme-fresh-breeze .card-brand-line { background: linear-gradient(90deg, transparent, #21a8a5, transparent); height: 2px; }
+        #perfume-card.theme-fresh-breeze .card-perfume-name { color: #073b46; font-weight: 900; }
+        #perfume-card.theme-fresh-breeze .card-instructions-section { border-radius: 14px; background: rgba(255,255,255,.70); }
+        #perfume-card.theme-fresh-breeze .card-notes-strip { border-radius: 20px; }
+
+        /* قوي وشيك وخطير وشبابي: فحم، كروم، وطاقة كهربائية */
+        #perfume-card.theme-bold-noir {
+            --card-bg: radial-gradient(circle at 83% 13%, rgba(85, 255, 210, .14), transparent 25%), radial-gradient(circle at 12% 92%, rgba(74, 103, 255, .16), transparent 35%), linear-gradient(135deg, #171a20, #08090c 58%, #11141b);
+            --card-accent: #57e7c6; --card-accent-light: #d7fff6; --card-text: #f2fffc; --card-text-sec: #a5bbb9;
+            --guide-bg: rgba(255,255,255,.045); --guide-border: rgba(87,231,198,.42); --guide-divider: rgba(87,231,198,.24);
+            --notes-bg: rgba(87,231,198,.08); --notes-border: rgba(87,231,198,.36); --frame-border: 1px solid rgba(87,231,198,.55);
+            box-shadow: 0 20px 60px rgba(0,0,0,.7), 0 0 25px rgba(87,231,198,.16);
+        }
+        #perfume-card.theme-bold-noir .card-frame { border: 1px solid rgba(87,231,198,.68); box-shadow: inset 0 0 0 2px rgba(255,255,255,.035), inset 0 0 30px rgba(87,231,198,.05); border-radius: 2px; top: 12px; left: 12px; right: 12px; bottom: 12px; }
+        #perfume-card.theme-bold-noir .card-corner { width: 30px; height: 30px; }
+        #perfume-card.theme-bold-noir .card-corner::before, #perfume-card.theme-bold-noir .card-corner::after { background: #57e7c6; box-shadow: 0 0 9px rgba(87,231,198,.7); }
+        #perfume-card.theme-bold-noir .card-subtitle-tag { color: #d7fff6; background: rgba(87,231,198,.12); border: 1px solid rgba(87,231,198,.45); padding: 3px 17px; display: inline-block; clip-path: polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%); }
+        #perfume-card.theme-bold-noir .card-brand-logo { filter: brightness(2.25) drop-shadow(0 0 9px rgba(87,231,198,.4)); }
+        #perfume-card.theme-bold-noir .card-perfume-name { color: #fff; font-weight: 900; text-shadow: 0 0 12px rgba(87,231,198,.22); }
+        #perfume-card.theme-bold-noir .card-instructions-section { border-radius: 3px; }
+
+        /* ناعم وجميل وهادئ: ورق عاجي ولمسة لافندر رقيقة */
+        #perfume-card.theme-soft-calm {
+            --card-bg: radial-gradient(ellipse at 50% 0%, rgba(255,255,255,.92), transparent 55%), radial-gradient(circle at 10% 88%, rgba(197,181,224,.26), transparent 37%), linear-gradient(135deg, #fffdfa, #f6f1fa 52%, #eee9f4);
+            --card-accent: #806f9c; --card-accent-light: #5d4d79; --card-text: #302b3b; --card-text-sec: #6e647c;
+            --guide-bg: rgba(255,255,255,.76); --guide-border: rgba(128,111,156,.28); --guide-divider: rgba(128,111,156,.18);
+            --notes-bg: rgba(255,255,255,.78); --notes-border: rgba(128,111,156,.24); --frame-border: 1px solid rgba(128,111,156,.44);
+            box-shadow: 0 20px 60px rgba(91,73,125,.13);
+        }
+        #perfume-card.theme-soft-calm .card-frame { border: 1px solid rgba(128,111,156,.54); box-shadow: inset 0 0 0 5px rgba(255,255,255,.68), inset 0 0 0 6px rgba(128,111,156,.12); border-radius: 28px; top: 12px; left: 12px; right: 12px; bottom: 12px; }
+        #perfume-card.theme-soft-calm .card-corner { display: none; }
+        #perfume-card.theme-soft-calm .card-subtitle-tag { color: #68557f; background: rgba(255,255,255,.55); border: 1px solid rgba(128,111,156,.24); border-radius: 20px; padding: 3px 17px; display: inline-block; }
+        #perfume-card.theme-soft-calm .card-brand-line { background: linear-gradient(90deg, transparent, #a18abb, transparent); }
+        #perfume-card.theme-soft-calm .card-perfume-name { font-family: 'Amiri', serif; color: #302b3b; }
+        #perfume-card.theme-soft-calm .card-instructions-section { border-radius: 16px; }
+        #perfume-card.theme-soft-calm .card-notes-strip { border-radius: 20px; }
+
+        /* نسائي جميل: ورد دمشقي وذهب وردي */
+        #perfume-card.theme-feminine-rose {
+            --card-bg: radial-gradient(circle at 16% 16%, rgba(255,255,255,.92), transparent 26%), radial-gradient(circle at 84% 82%, rgba(230,147,177,.28), transparent 42%), linear-gradient(135deg, #fff9fa 0%, #fcebef 50%, #f6dfe7 100%);
+            --card-accent: #b45170; --card-accent-light: #7c2945; --card-text: #35131f; --card-text-sec: #754657;
+            --guide-bg: rgba(255,255,255,.80); --guide-border: rgba(180,81,112,.34); --guide-divider: rgba(180,81,112,.22);
+            --notes-bg: rgba(255,255,255,.83); --notes-border: rgba(180,81,112,.30); --frame-border: 1px solid rgba(180,81,112,.58);
+            box-shadow: 0 20px 60px rgba(180,81,112,.17);
+        }
+        #perfume-card.theme-feminine-rose .card-frame { border: 1px solid #b45170; box-shadow: inset 0 0 0 4px #fff8fa, inset 0 0 0 5px rgba(180,81,112,.24); border-radius: 18px; top: 10px; left: 10px; right: 10px; bottom: 10px; }
+        #perfume-card.theme-feminine-rose .card-corner { width: 22px; height: 22px; }
+        #perfume-card.theme-feminine-rose .card-corner::before, #perfume-card.theme-feminine-rose .card-corner::after { background: #c86d89; border-radius: 3px; }
+        #perfume-card.theme-feminine-rose .card-subtitle-tag { color: #963c5b; background: rgba(255,255,255,.56); border: 1px solid rgba(180,81,112,.30); border-radius: 18px; padding: 3px 17px; display: inline-block; }
+        #perfume-card.theme-feminine-rose .card-perfume-name { font-family: 'Amiri', serif; color: #35131f; }
+        #perfume-card.theme-feminine-rose .card-instructions-section { border-radius: 15px; box-shadow: 0 5px 18px rgba(180,81,112,.07); }
+        #perfume-card.theme-feminine-rose .card-notes-strip { border-radius: 20px; }
+
+        /* القوالب الكلاسيكية الجديدة */
+        #perfume-card.theme-classic-ivory {
+            --card-bg: linear-gradient(135deg, #fffdf7, #f4eddf 55%, #e9dcc8); --card-accent: #7b5228; --card-accent-light: #563719; --card-text: #25190d; --card-text-sec: #654e36;
+            --guide-bg: rgba(255,255,255,.77); --guide-border: rgba(123,82,40,.35); --guide-divider: rgba(123,82,40,.22); --notes-bg: rgba(255,255,255,.78); --notes-border: rgba(123,82,40,.30); --frame-border: 2px double #7b5228;
+        }
+        #perfume-card.theme-classic-ivory .card-frame { border: 3px double #7b5228; box-shadow: inset 0 0 0 4px #fffdf7, inset 0 0 0 5px rgba(123,82,40,.38); border-radius: 0; top: 10px; left: 10px; right: 10px; bottom: 10px; }
+        #perfume-card.theme-classic-ivory .card-corner { width: 26px; height: 26px; } #perfume-card.theme-classic-ivory .card-corner::before, #perfume-card.theme-classic-ivory .card-corner::after { background: #7b5228; }
+        #perfume-card.theme-classic-ivory .card-subtitle-tag { border-top: 1px solid #7b5228; border-bottom: 1px solid #7b5228; padding: 3px 18px; color: #5a3a1a; display: inline-block; }
+        #perfume-card.theme-classic-ivory .card-perfume-name { font-family: 'Amiri', serif; color: #25190d; }
+        #perfume-card.theme-classic-ivory .card-instructions-section, #perfume-card.theme-classic-ivory .card-notes-strip { border-radius: 0; }
+
+        #perfume-card.theme-classic-navy {
+            --card-bg: radial-gradient(ellipse at 50% -8%, rgba(255,255,255,.12), transparent 50%), linear-gradient(135deg, #17324b, #091827 58%, #10263b); --card-accent: #d6b368; --card-accent-light: #fff0bf; --card-text: #fbf5e7; --card-text-sec: #c5c6ba;
+            --guide-bg: rgba(255,255,255,.055); --guide-border: rgba(214,179,104,.46); --guide-divider: rgba(214,179,104,.27); --notes-bg: rgba(255,255,255,.06); --notes-border: rgba(214,179,104,.36); --frame-border: 1px solid #d6b368;
+        }
+        #perfume-card.theme-classic-navy .card-frame { border: 1px solid #d6b368; box-shadow: inset 0 0 0 4px rgba(214,179,104,.10), inset 0 0 0 5px rgba(255,255,255,.05); border-radius: 1px; top: 11px; left: 11px; right: 11px; bottom: 11px; }
+        #perfume-card.theme-classic-navy .card-corner { width: 28px; height: 28px; } #perfume-card.theme-classic-navy .card-corner::before, #perfume-card.theme-classic-navy .card-corner::after { background: #d6b368; }
+        #perfume-card.theme-classic-navy .card-brand-logo { filter: brightness(2.25) sepia(.28); } #perfume-card.theme-classic-navy .card-subtitle-tag { color: #fff0bf; border: 1px solid rgba(214,179,104,.45); padding: 3px 15px; display: inline-block; }
+        #perfume-card.theme-classic-navy .card-perfume-name { font-family: 'Amiri', serif; color: #fff7e0; } #perfume-card.theme-classic-navy .card-instructions-section { border-radius: 2px; }
+
+        #perfume-card.theme-classic-burgundy {
+            --card-bg: radial-gradient(ellipse at 50% 5%, rgba(255,235,213,.16), transparent 52%), linear-gradient(135deg, #5a1c2b, #2d0a15 62%, #481524); --card-accent: #d9af72; --card-accent-light: #ffe1aa; --card-text: #fff4e4; --card-text-sec: #dfbca8;
+            --guide-bg: rgba(255,255,255,.055); --guide-border: rgba(217,175,114,.47); --guide-divider: rgba(217,175,114,.27); --notes-bg: rgba(255,255,255,.065); --notes-border: rgba(217,175,114,.38); --frame-border: 1px solid rgba(217,175,114,.8);
+        }
+        #perfume-card.theme-classic-burgundy .card-frame { border: 1px solid #d9af72; box-shadow: inset 0 0 0 3px rgba(255,255,255,.045), inset 0 0 0 5px rgba(217,175,114,.10); border-radius: 6px; top: 11px; left: 11px; right: 11px; bottom: 11px; }
+        #perfume-card.theme-classic-burgundy .card-corner { width: 25px; height: 25px; } #perfume-card.theme-classic-burgundy .card-corner::before, #perfume-card.theme-classic-burgundy .card-corner::after { background: #d9af72; }
+        #perfume-card.theme-classic-burgundy .card-brand-logo { filter: brightness(2.15) sepia(.25); } #perfume-card.theme-classic-burgundy .card-subtitle-tag { color: #ffe1aa; background: rgba(217,175,114,.10); border-radius: 14px; padding: 3px 16px; display: inline-block; }
+        #perfume-card.theme-classic-burgundy .card-perfume-name { font-family: 'Amiri', serif; color: #fff4e4; }
+
+        #perfume-card.theme-classic-monochrome {
+            --card-bg: #fbfaf7; --card-accent: #171717; --card-accent-light: #171717; --card-text: #101010; --card-text-sec: #555; --guide-bg: #fff; --guide-border: #d5d3cf; --guide-divider: #d5d3cf; --notes-bg: #fff; --notes-border: #1b1b1b; --frame-border: 1px solid #171717;
+        }
+        #perfume-card.theme-classic-monochrome .card-frame { border: 1px solid #171717; box-shadow: inset 0 0 0 5px #fbfaf7, inset 0 0 0 6px #171717; border-radius: 0; top: 12px; left: 12px; right: 12px; bottom: 12px; }
+        #perfume-card.theme-classic-monochrome .card-corner { display: none; } #perfume-card.theme-classic-monochrome .card-brand-logo { filter: grayscale(1) contrast(1.45); }
+        #perfume-card.theme-classic-monochrome .card-subtitle-tag { border-top: 1px solid #171717; border-bottom: 1px solid #171717; padding: 3px 14px; color: #222; display: inline-block; } #perfume-card.theme-classic-monochrome .card-brand-line { background: #171717; width: 42px; height: 1px; }
+        #perfume-card.theme-classic-monochrome .card-perfume-name { font-family: 'Amiri', serif; color: #111; } #perfume-card.theme-classic-monochrome .card-instructions-section, #perfume-card.theme-classic-monochrome .card-notes-strip { border-radius: 0; }
+
+        /* أسود جريء: وضوح عالٍ وحواف دائرية للصورة المصدّرة */
+        #perfume-card.theme-black-rounded {
+            --card-bg: radial-gradient(circle at 82% 10%, rgba(255,255,255,.10), transparent 24%), linear-gradient(145deg, #252525 0%, #0c0c0c 48%, #171717 100%);
+            --card-accent: #ffffff; --card-accent-light: #ffffff; --card-text: #ffffff; --card-text-sec: #c9c9c9;
+            --guide-bg: rgba(255,255,255,.075); --guide-border: rgba(255,255,255,.35); --guide-divider: rgba(255,255,255,.20);
+            --notes-bg: rgba(255,255,255,.10); --notes-border: rgba(255,255,255,.32); --frame-border: 1px solid rgba(255,255,255,.60);
+            border-radius: 38px;
+            box-shadow: 0 22px 58px rgba(0,0,0,.66), 0 0 0 1px rgba(255,255,255,.12);
+        }
+        #perfume-card.theme-black-rounded .card-frame { border: 1px solid rgba(255,255,255,.76); box-shadow: inset 0 0 0 5px rgba(255,255,255,.035); border-radius: 29px; top: 12px; left: 12px; right: 12px; bottom: 12px; }
+        #perfume-card.theme-black-rounded .card-corner { display: none; }
+        #perfume-card.theme-black-rounded .card-brand-logo { filter: brightness(3) grayscale(1); }
+        #perfume-card.theme-black-rounded .card-brand-line { background: linear-gradient(90deg, transparent, #fff, transparent); height: 1px; width: 64px; }
+        #perfume-card.theme-black-rounded .card-perfume-name { color: #fff; font-family: 'Tajawal', sans-serif; font-weight: 900; text-shadow: none; }
+        #perfume-card.theme-black-rounded .card-instructions-section { border-radius: 20px; background: rgba(255,255,255,.075); }
+        #perfume-card.theme-black-rounded .card-notes-strip { border-radius: 20px; background: rgba(255,255,255,.095); }
+
+        /* Inner border frame */
+        .card-frame {
+            position: absolute;
+            top: 10px; left: 10px; right: 10px; bottom: 10px;
+            border: var(--frame-border, 1px solid var(--card-accent));
+            border-radius: 2px;
+            pointer-events: none;
+            z-index: 1;
+            transition: all 0.35s;
+        }
+
+        /* Corner ornaments */
+        .card-corner {
+            position: absolute;
+            width: 24px; height: 24px;
+            z-index: 2;
+            pointer-events: none;
+        }
+        .card-corner::before, .card-corner::after {
+            content: '';
+            position: absolute;
+            background: var(--card-accent);
+            opacity: 0.85;
+            transition: background 0.35s;
+        }
+        .corner-tr { top: 7px; right: 7px; }
+        .corner-tr::before { top: 0; right: 0; width: 24px; height: 2px; }
+        .corner-tr::after  { top: 0; right: 0; width: 2px; height: 24px; }
+        .corner-tl { top: 7px; left: 7px; }
+        .corner-tl::before { top: 0; left: 0; width: 24px; height: 2px; }
+        .corner-tl::after  { top: 0; left: 0; width: 2px; height: 24px; }
+        .corner-br { bottom: 7px; right: 7px; }
+        .corner-br::before { bottom: 0; right: 0; width: 24px; height: 2px; }
+        .corner-br::after  { bottom: 0; right: 0; width: 2px; height: 24px; }
+        .corner-bl { bottom: 7px; left: 7px; }
+        .corner-bl::before { bottom: 0; left: 0; width: 24px; height: 2px; }
+        .corner-bl::after  { bottom: 0; left: 0; width: 2px; height: 24px; }
+
+        /* Card inner content */
+        .card-content {
+            position: relative;
+            z-index: 3;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 20px 30px;
+        }
+
+        /* Brand header & Logo */
+        .card-brand {
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2px;
+            min-height: 46px;
+        }
+
+        .card-brand-logo {
+            max-height: 48px;
+            max-width: 200px;
+            object-fit: contain;
+            display: block;
+            margin: 0 auto;
+            transition: all 0.3s ease;
+        }
+
+        #perfume-card.theme-obsidian-glow .card-brand-logo,
+        #perfume-card.theme-sapphire-luminous .card-brand-logo {
+            filter: brightness(2.2) drop-shadow(0 2px 8px rgba(255, 215, 60, 0.4));
+        }
+
+        .card-subtitle-tag {
+            text-align: center;
+            font-size: 10px;
+            color: var(--card-text-sec);
+            margin-top: 0;
+            margin-bottom: 3px;
+            opacity: 0.9;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .card-brand-line {
+            width: 70px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--card-accent), transparent);
+            margin: 1px auto 6px;
+            opacity: 0.45;
+        }
+
+        /* Perfume name */
+        .card-perfume-name {
+            text-align: center;
+            font-family: 'Amiri', serif;
+            font-size: var(--card-name-size, 32px);
+            font-weight: 700;
+            color: var(--card-text);
+            margin-bottom: 1px;
+            line-height: 1.25;
+        }
+
+        /* Inspired by */
+        .card-inspired {
+            text-align: center;
+            font-size: 13px;
+            color: var(--card-text-sec);
+            margin-bottom: 7px;
+        }
+
+        .card-inspired strong {
+            color: var(--card-accent-light);
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        /* Notes Strip (Editorial Luxury Fragrance Palette) */
+        .card-notes-strip {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin: 0 auto 8px;
+            padding: 4px 16px;
+            background: var(--notes-bg, rgba(255, 255, 255, 0.7));
+            border: 1px solid var(--notes-border, rgba(168, 121, 28, 0.25));
+            border-radius: 4px;
+            max-width: 92%;
+            transition: all 0.35s;
+        }
+
+        .card-notes-strip .notes-badge {
+            font-size: 11px;
+            color: var(--card-accent);
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .card-notes-strip .notes-content {
+            font-family: 'Tajawal', sans-serif;
+            font-size: 12px;
+            color: var(--card-text);
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* ══════════════ INSTRUCTIONS GUIDE SECTION (PRINT STATIONERY) ══════════════ */
+        .card-instructions-section {
+            margin: 0 auto 9px;
+            width: 100%;
+            max-width: 660px;
+            background: var(--guide-bg, rgba(255, 255, 255, 0.7));
+            border: 1px solid var(--guide-border, rgba(168, 121, 28, 0.3));
+            border-radius: 4px;
+            padding: 7px 12px 8px;
+            transition: all 0.35s ease;
+            position: relative;
+        }
+
+        .instructions-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+
+        .instructions-header .guide-line {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--guide-border, rgba(168, 121, 28, 0.3)), transparent);
+        }
+
+        .instructions-header .guide-title {
+            font-family: 'Amiri', serif;
+            font-size: 12.5px;
+            font-weight: 700;
+            color: var(--card-accent);
+            letter-spacing: 0.5px;
+        }
+
+        .instructions-grid {
+            display: flex;
+            align-items: stretch;
+            justify-content: space-between;
+        }
+
+        .instruction-item {
+            flex: 1;
+            text-align: center;
+            padding: 2px 6px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-width: 0;
+        }
+
+        .instruction-item .inst-top {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            margin-bottom: 2px;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+        }
+
+        .instruction-item .inst-icon {
+            font-size: 15px;
+            line-height: 1;
+            background: transparent !important;
+            border: none !important;
+        }
+
+        .instruction-item .inst-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--card-text-sec);
+            white-space: nowrap;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            padding: 0 !important;
+        }
+
+        .instruction-item .inst-value {
+            font-family: 'Amiri', serif;
+            font-size: 16.5px;
+            font-weight: 700;
+            color: var(--card-text);
+            line-height: 1.25;
+            margin-bottom: 2px;
+            white-space: nowrap;
+        }
+
+        .instruction-item .inst-note {
+            font-size: 10.5px;
+            color: var(--card-text-sec);
+            line-height: 1.3;
+            opacity: 0.9;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .inst-divider {
+            width: 1px;
+            background: var(--guide-divider, rgba(168, 121, 28, 0.2));
+            margin: 2px 4px;
+            align-self: stretch;
+        }
+
+        /* Divider */
+        .card-msg-divider {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .card-msg-divider::before,
+        .card-msg-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--card-accent), transparent);
+            opacity: 0.25;
+        }
+
+        .card-msg-divider .dot {
+            color: var(--card-accent);
+            font-size: 10px;
+            opacity: 0.6;
+        }
+
+        /* Message / telegram (Enlarged for readability) */
+        .card-message {
+            text-align: center;
+            margin-bottom: 9px;
+            padding: 0 10px;
+        }
+
+        .card-message p {
+            font-family: 'Amiri', serif;
+            font-size: 16px;
+            color: var(--card-text-sec);
+            line-height: 1.7;
+            font-weight: 500;
+        }
+
+        /* Card footer */
+        .card-bottom {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .card-signature {
+            font-family: 'Amiri', serif;
+            font-size: 12.5px;
+            color: var(--card-accent);
+            font-weight: 700;
+        }
+
+        .card-date {
+            font-size: 11px;
+            color: var(--card-text-sec);
+            opacity: 0.65;
+        }
+
+        /* ═══════════════════════════════════════════════
+           Toast Notification
+           ═══════════════════════════════════════════════ */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(80px);
+            background: #1a1a24;
+            color: #f5e6b8;
+            padding: 12px 28px;
+            border-radius: 10px;
+            border: 1px solid var(--panel-accent);
+            font-size: 0.88rem;
+            z-index: 9999;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ═══════════════════════════════════════════════
+           Responsive
+           ═══════════════════════════════════════════════ */
+        @media (max-width: 1100px) {
+            .app-top-header {
+                flex-wrap: wrap;
+                padding: 12px 16px;
+                gap: 12px;
+            }
+            .header-center-presets {
+                order: 3;
+                max-width: 100%;
+                width: 100%;
+            }
+            .editor-deck-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .app { height: 100dvh; min-height: 100dvh; overflow: hidden; }
+            .app-top-header {
+                padding: 10px 12px;
+                gap: 9px;
+            }
+            .header-brand {
+                width: auto;
+                flex: 0 0 auto;
+            }
+            .header-actions {
+                width: auto;
+                margin-inline-start: auto;
+            }
+            .header-btn {
+                min-width: 126px;
+                padding: 0 12px;
+            }
+            .header-center-presets {
+                order: 3;
+                width: 100%;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 6px;
+            }
+            .header-presets-box {
+                min-width: 0;
+            }
+            .header-presets-box .preset-input-wrap { min-width: 0; }
+            .header-presets-box input { min-width: 0; width: 100%; }
+            .storage-status-bar { width: 100%; justify-content: space-between; }
+            .mobile-drawer-actions { display: flex; gap: 6px; }
+            .mobile-drawer-btn {
+                height: 36px; padding: 0 10px; border: 1px solid var(--panel-border); border-radius: 8px;
+                background: var(--panel-surface); color: var(--panel-text); font-family: var(--font-body); font-weight: 700; cursor: pointer;
+            }
+            #perfume-card {
+                zoom: 0.65;
+                transform: none;
+            }
+            .card-wrapper {
+                margin-top: 10px;
+                margin-bottom: 0;
+                height: 300px;
+                width: 100%;
+                overflow: visible;
+            }
+            .canvas-area {
+                width: 100%; min-height: 0; overflow: auto; align-items: flex-start;
+                scrollbar-width: none; -ms-overflow-style: none; touch-action: pan-x pan-y; overscroll-behavior: contain;
+            }
+            .canvas-area::-webkit-scrollbar { display: none; }
+            .canvas-toolbar {
+                position: relative; top: auto; left: auto; transform: none;
+                align-self: center; margin: 6px 0 4px;
+            }
+            .card-size-label { margin-top: -2px; }
+            .bottom-theme-dock, .editor-deck-wrapper {
+                position: fixed; top: 0; bottom: 0; z-index: 300; width: min(88vw, 360px); max-width: 360px;
+                margin: 0; padding: 16px 14px 28px; overflow-y: auto; background: #12121b;
+                border: 1px solid var(--panel-border); box-shadow: 0 0 42px rgba(0,0,0,.65); transition: transform .28s ease;
+            }
+            .bottom-theme-dock { right: 0; transform: translateX(105%); display: block; border-radius: 18px 0 0 18px; }
+            .editor-deck-wrapper { left: 0; transform: translateX(-105%); border-radius: 0 18px 18px 0; }
+            .bottom-theme-dock.drawer-open, .editor-deck-wrapper.drawer-open { transform: translateX(0); }
+            .theme-dock-nav { justify-content: center; border-left: 0; border-bottom: 1px solid var(--panel-border); padding: 0 0 12px; margin-bottom: 12px; }
+            .theme-horizontal-grid { display: grid; grid-template-columns: 1fr; gap: 8px; align-items: stretch; }
+            .theme-chip { width: 100%; justify-content: flex-start; padding: 11px 12px; }
+            .editor-deck-grid { grid-template-columns: 1fr; gap: 12px; }
+            .drawer-heading { display: flex; align-items: center; justify-content: space-between; color: #f5e6b8; font-weight: 800; margin-bottom: 14px; }
+            .drawer-close { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border: 1px solid var(--panel-border); background: var(--panel-surface); color: var(--panel-text); border-radius: 8px; font-size: 1.1rem; cursor: pointer; }
+            .drawer-backdrop { display: block; position: fixed; inset: 0; z-index: 250; background: rgba(0,0,0,.58); opacity: 0; pointer-events: none; transition: opacity .25s ease; }
+            .drawer-backdrop.visible { opacity: 1; pointer-events: auto; }
+            body.drawer-open { overflow: hidden; }
+        }
+
+        @media (max-width: 480px) {
+            .canvas-area { padding-inline: 4px; }
+            .header-logo { height: 34px; }
+            .header-presets-box { gap: 4px; }
+            .header-presets-box input { font-size: 0.76rem; }
+            .btn-sm { padding-inline: 8px; }
+            #perfume-card { zoom: 0.50; transform: none; }
+            .card-wrapper { height: 240px; }
+            .canvas-toolbar { transform: scale(0.9); transform-origin: center; }
+            .form-row { flex-direction: column; gap: 8px; }
+            .form-row .form-group { width: 100%; }
+            .toast { width: calc(100% - 24px); text-align: center; justify-content: center; padding: 10px 14px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+
+        <!-- ═══════ App Top Header Bar ═══════ -->
+        <header class="app-top-header">
+            <div class="header-brand">
+                <img src="logo.avif" alt="عطور إبراهيم الهاشمي" class="header-logo">
+            </div>
+
+            <div class="header-center-presets">
+                <div class="header-presets-box">
+                    <div class="preset-input-wrap">
+                        <input type="text" id="preset-input" list="presets-datalist" placeholder="اكتب اسم العطر أو اختر قالباً..." autocomplete="off" oninput="onPresetInputChanged()">
+                        <datalist id="presets-datalist"></datalist>
+                    </div>
+                    <button type="button" class="btn-sm btn-save" onclick="saveCurrentAsPreset()" title="حفظ العطر الحالي في LocalStorage">
+                        💾 حفظ
+                    </button>
+                    <button type="button" class="btn-sm btn-danger" onclick="deleteCurrentPreset()" title="حذف العطر المحدد من LocalStorage">
+                        🗑️ حذف
+                    </button>
+                </div>
+                <div class="storage-status-bar" id="storage-status-bar">
+                    <div class="storage-status-left">
+                        <span class="status-indicator-dot" id="status-dot"></span>
+                        <span id="storage-status-text">تخزين تلقائي</span>
+                    </div>
+                    <span class="storage-count-pill" id="storage-count-pill">٦ عطور</span>
+                </div>
+            </div>
+
+            <div class="mobile-drawer-actions">
+                <button type="button" class="mobile-drawer-btn" onclick="toggleMobileDrawer('themes')">القوالب</button>
+                <button type="button" class="mobile-drawer-btn" onclick="toggleMobileDrawer('editor')">تعديل</button>
+            </div>
+
+            <div class="header-actions">
+                <button class="header-btn png-btn" id="btn-png" onclick="exportPNG()">
+                    <span class="btn-text">📸 حفظ كـ PNG</span>
+                    <span class="spinner"></span>
+                </button>
+            </div>
+        </header>
+
+        <!-- ═══════ Canvas Area ═══════ -->
+        <main class="canvas-area">
+            <div class="canvas-toolbar">
+                <button onclick="zoomOut()" title="تصغير">➖</button>
+                <span class="zoom-label" id="zoom-label">100%</span>
+                <button onclick="zoomIn()" title="تكبير">➕</button>
+                <button onclick="zoomReset()" title="إعادة تعيين">↺</button>
+            </div>
+
+            <div class="card-wrapper">
+                <!-- ═══════ THE CARD ═══════ -->
+                <div id="perfume-card" class="theme-charismatic">
+                    <!-- Decorative corners -->
+                    <div class="card-corner corner-tr"></div>
+                    <div class="card-corner corner-tl"></div>
+                    <div class="card-corner corner-br"></div>
+                    <div class="card-corner corner-bl"></div>
+                    <!-- Inner frame -->
+                    <div class="card-frame"></div>
+
+                    <div class="card-content">
+                        <!-- Brand Logo -->
+                        <div class="card-brand">
+                            <img src="logo.avif" alt="عطور إبراهيم الهاشمي" class="card-brand-logo" id="card-logo">
+                        </div>
+                        <div class="card-brand-line"></div>
+
+                        <!-- Perfume Name -->
+                        <div class="card-perfume-name" id="card-name"><bdi>عطر صدام</bdi></div>
+
+                        <!-- Inspired By -->
+                        <div class="card-inspired">
+                            <span>مستوحى من: </span>
+                            <strong id="card-inspired"><bdi>بلاك أفغانو</bdi></strong>
+                            <span> — شركة </span>
+                            <strong id="card-company"><bdi>نسوماتو</bdi></strong>
+                        </div>
+
+                        <!-- Distinctive Notes Strip -->
+                        <div class="card-notes-strip" id="card-notes-wrap">
+                            <span class="notes-badge" id="card-notes-badge">النوتات العطرية:</span>
+                            <span class="notes-content" id="card-notes"><bdi>القنب • البخور • العود • التبغ • القهوة • الراتنجات</bdi></span>
+                        </div>
+
+                        <!-- Instructions Guide Section (دليل وإرشادات الاستخدام الفاخر) -->
+                        <div class="card-instructions-section">
+                            <div class="instructions-header">
+                                <span class="guide-line"></span>
+                                <span class="guide-title" id="card-guide-title">✦ إرشادات الاستخدام والتعتيق ✦</span>
+                                <span class="guide-line"></span>
+                            </div>
+                            <div class="instructions-grid">
+                                <!-- Item 1: الرش -->
+                                <div class="instruction-item">
+                                    <div class="inst-top">
+                                        <span class="inst-icon">💨</span>
+                                        <span class="inst-label" id="card-sprays-label">أقل عدد رشات لأداء جيد</span>
+                                    </div>
+                                    <div class="inst-value" id="card-sprays"><bdi>٦ متفرقات</bdi></div>
+                                    <div class="inst-note" id="card-spray-note"><bdi>لأن الأتومايزر صغير</bdi></div>
+                                </div>
+
+                                <div class="inst-divider"></div>
+
+                                <!-- Item 2: التعتيق -->
+                                <div class="instruction-item">
+                                    <div class="inst-top">
+                                        <span class="inst-icon">⏳</span>
+                                        <span class="inst-label">فترة التعتيق المطلوبة</span>
+                                    </div>
+                                    <div class="inst-value" id="card-aging"><bdi>٢٥ — ٤٥ يوم</bdi></div>
+                                    <div class="inst-note" id="card-aging-note"><bdi>لتعزيز ثبات العطر ونقاء النوتات</bdi></div>
+                                </div>
+
+                                <div class="inst-divider"></div>
+
+                                <!-- Item 3: عمر العطر الحالي -->
+                                <div class="instruction-item">
+                                    <div class="inst-top">
+                                        <span class="inst-icon">🕰️</span>
+                                        <span class="inst-label">عمر العطر الحالي</span>
+                                    </div>
+                                    <div class="inst-value" id="card-current-age"><bdi>٣٠ يوم</bdi></div>
+                                    <div class="inst-note" id="card-current-age-note"><bdi class="age-status-badge status-mid">متوسط</bdi></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Divider -->
+                        <div class="card-msg-divider">
+                            <span class="dot" id="card-divider-ornament">✦</span>
+                        </div>
+
+                        <!-- Message -->
+                        <div class="card-message">
+                            <p id="card-message"><bdi>نتمنى لك تجربة عطرية فريدة تليق بذوقك الرفيع. عطرك هو توقيعك الخاص.</bdi></p>
+                        </div>
+
+                        <!-- Footer -->
+                        <div class="card-bottom">
+                            <span class="card-signature" id="card-signature"><bdi>— عطور إبراهيم الهاشمي —</bdi></span>
+                            <span class="card-date" id="card-date" style="display: none;"></span>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Card -->
+
+                <div class="card-size-label">٧٢٠ × ٤٣٠ بكسل  •  حجم الطباعة ≈ ١٩٠ × ١١٤ ملم</div>
+            </div>
+
+            <!-- ═══════ Bottom Horizontal Themes Dock ═══════ -->
+            <div class="bottom-theme-dock">
+                <div class="drawer-heading">
+                    <span>القوالب</span>
+                    <button type="button" class="drawer-close" onclick="closeMobileDrawers()" aria-label="إغلاق القوالب">×</button>
+                </div>
+                <div class="theme-dock-nav">
+                    <button type="button" class="dock-nav-btn" onclick="prevTheme()" title="النمط السابق (سهم يسار ⬅️)">◀</button>
+                    <span class="dock-badge" id="theme-idx-badge">١ / ٨</span>
+                    <button type="button" class="dock-nav-btn" onclick="nextTheme()" title="النمط التالي (سهم يمين ➡️)">▶</button>
+                </div>
+                <div class="theme-horizontal-grid" id="theme-grid">
+                    <!-- Populated dynamically via JS -->
+                </div>
+            </div>
+
+            <!-- ═══════ Editor Deck (Below Design) ═══════ -->
+            <div class="editor-deck-wrapper">
+                <div class="drawer-heading">
+                    <span>تعديل البطاقة</span>
+                    <button type="button" class="drawer-close" onclick="closeMobileDrawers()" aria-label="إغلاق التعديل">×</button>
+                </div>
+                <div class="editor-deck-grid">
+
+                    <!-- Card 1: Perfume Info (Color-coded Amber/Gold) -->
+                    <div class="deck-card deck-card-info">
+                        <div class="deck-card-body">
+                            <div class="form-row">
+                                <div class="form-group" style="flex: 1.2;">
+                                    <label>اسم العطر</label>
+                                    <input type="text" id="input-name" value="عطر صدام" oninput="onPerfumeNameInput(this.value)">
+                                </div>
+                                <div class="form-group range-group" style="flex: 1;">
+                                    <div class="range-header">
+                                        <span>حجم اسم العطر</span>
+                                        <span class="range-value" id="name-size-val">32px</span>
+                                    </div>
+                                    <input type="range" id="input-name-size" min="20" max="46" value="32" oninput="updateNameSize()">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>مستوحى من</label>
+                                    <input type="text" id="input-inspired" value="بلاك أفغانو" oninput="updateCard()">
+                                </div>
+                                <div class="form-group">
+                                    <label>الشركة</label>
+                                    <input type="text" id="input-company" value="نسوماتو" oninput="updateCard()">
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label>النوتات المميزة للعطر</label>
+                                <input type="text" id="input-notes" value="القنب • البخور • العود • التبغ • القهوة • الراتنجات" placeholder="مثال: العود • العنبر • البخور..." oninput="updateCard()">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: Usage Instructions (Color-coded Emerald) -->
+                    <div class="deck-card deck-card-usage">
+                        <div class="deck-card-body">
+                            <div class="form-row">
+                                <div class="form-group" style="flex: 0.85;">
+                                    <label>أقل عدد رشات</label>
+                                    <input type="number" id="input-sprays" value="6" min="1" max="20" oninput="updateCard()">
+                                </div>
+                                <div class="form-group" style="flex: 1.15;">
+                                    <label>طريقة الرش</label>
+                                    <select id="input-spray-method" onchange="updateCard()">
+                                        <option value="متفرقات">متفرقات</option>
+                                        <option value="على نقاط النبض">على نقاط النبض</option>
+                                        <option value="على الملابس">على الملابس</option>
+                                    </select>
+                                </div>
+                                <div class="form-group" style="flex: 1.3;">
+                                    <label>ملاحظة الرش</label>
+                                    <input type="text" id="input-spray-note" value="لأن الأتومايزر صغير" oninput="updateCard()">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group" style="flex: 0.8;">
+                                    <label>تعتيق من (يوم)</label>
+                                    <input type="number" id="input-aging-from" value="25" min="0" oninput="onAgingRangeChange()">
+                                </div>
+                                <div class="form-group" style="flex: 0.8;">
+                                    <label>تعتيق إلى (يوم)</label>
+                                    <input type="number" id="input-aging-to" value="45" min="0" oninput="onAgingRangeChange()">
+                                </div>
+                                <div class="form-group" style="flex: 1.4;">
+                                    <label>ملاحظة التعتيق</label>
+                                    <input type="text" id="input-aging-note" value="لتعزيز ثبات العطر ونقاء النوتات العطرية" oninput="updateCard()">
+                                </div>
+                            </div>
+                            <div class="form-row" style="margin-bottom: 0; align-items: flex-end;">
+                                <div class="form-group" style="flex: 0.9; margin-bottom: 0;">
+                                    <label>عمر العطر</label>
+                                    <input type="text" id="input-current-age" value="30 يوم" placeholder="مثال: 30 يوم" oninput="onCurrentAgeInput()">
+                                </div>
+                                <div class="form-group" style="flex: 1; margin-bottom: 0;">
+                                    <label>حالة التعتيق</label>
+                                    <input type="text" id="input-current-age-note" value="متوسط" placeholder="مثال: متوسط" oninput="onCurrentAgeNoteInput()">
+                                </div>
+                                <div class="form-group" style="flex: 1.4; margin-bottom: 0;">
+                                    <div class="aging-status-pills" style="margin-top: 0; gap: 4px;">
+                                        <button type="button" class="status-pill status-pill-warn" id="pill-warn" onclick="setAgingStatus('ليس أفضل أداء')">ليس أفضل أداء</button>
+                                        <button type="button" class="status-pill status-pill-mid" id="pill-mid" onclick="setAgingStatus('متوسط')">متوسط</button>
+                                        <button type="button" class="status-pill status-pill-good" id="pill-good" onclick="setAgingStatus('جيد')">جيد</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: Message & Identity (Color-coded Violet) -->
+                    <div class="deck-card deck-card-brand">
+                        <div class="deck-card-body">
+                            <div class="form-row">
+                                <div class="form-group" style="flex: 1.5;">
+                                    <label>نص البرقية</label>
+                                    <textarea id="input-message" rows="2" style="min-height: 38px; height: 38px;" oninput="updateCard()">نتمنى لك تجربة عطرية فريدة تليق بذوقك الرفيع. عطرك هو توقيعك الخاص.</textarea>
+                                </div>
+                                <div class="form-group range-group" style="flex: 1; margin-top: 2px;">
+                                    <div class="range-header">
+                                        <span>حجم نص البرقية</span>
+                                        <span class="range-value" id="msg-size-val">16px</span>
+                                    </div>
+                                    <input type="range" id="input-msg-size" min="12" max="24" value="16" oninput="updateMsgSize()">
+                                </div>
+                            </div>
+                            <div class="form-row" style="margin-bottom: 0; align-items: flex-end;">
+                                <div class="form-group" style="flex: 1.3; margin-bottom: 0;">
+                                    <label>اسم البراند / التوقيع</label>
+                                    <input type="text" id="input-brand" value="عطور إبراهيم الهاشمي" oninput="updateCard()">
+                                </div>
+                                <div class="form-group" style="flex: 0.9; margin-bottom: 0;">
+                                    <label>تاريخ الكارت</label>
+                                    <input type="date" id="input-date" oninput="updateCard()">
+                                </div>
+                                <div class="form-group" style="flex: 0 0 auto; margin-bottom: 0;">
+                                    <div class="toggle-group" style="margin-bottom: 2px; gap: 6px;">
+                                        <label style="margin-bottom: 0; font-size: 0.72rem;">إظهار:</label>
+                                        <div class="toggle-switch" id="toggle-date" onclick="toggleSwitch(this); updateCard()"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <button type="button" class="drawer-backdrop" id="drawer-backdrop" onclick="closeMobileDrawers()" aria-label="إغلاق القائمة"></button>
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <!-- ═══════ JavaScript ═══════ -->
+    <script>
+        // ─── Arabic Numerals Helper ───
+        function toAr(n) {
+            return String(n).replace(/[0-9]/g, d => '٠١٢٣٤٥٦٧٨٩'[parseInt(d)]);
+        }
+
+        // ─── Format Date ───
+        function formatDate(dateStr) {
+            if (!dateStr) return '';
+            const [y, m, d] = dateStr.split('-');
+            return toAr(parseInt(d)) + ' / ' + toAr(parseInt(m)) + ' / ' + toAr(y);
+        }
+
+        // ─── Set today's date (Disabled by default so date is not shown on cards) ───
+        (function setToday() {
+            document.getElementById('input-date').value = '';
+        })();
+
+        // ─── Default Presets ───
+        const defaultPresets = [
+            {
+                name: 'عطر صدام',
+                inspired: 'بلاك أفغانو',
+                company: 'نسوماتو',
+                notes: 'القنب • البخور • العود • التبغ • القهوة • الراتنجات',
+                sprays: 6,
+                method: 'متفرقات',
+                sprayNote: 'لأن الأتومايزر صغير',
+                agingFrom: 25, agingTo: 45,
+                agingNote: 'لتعزيز ثبات العطر ونقاء النوتات العطرية',
+                currentAge: '30 يوم',
+                currentAgeNote: 'متوسط',
+                message: 'نتمنى لك تجربة عطرية فريدة تليق بذوقك الرفيع. عطرك هو توقيعك الخاص.'
+            },
+            {
+                name: 'عطر الملك',
+                inspired: 'كلايف كريستيان No.1',
+                company: 'كلايف كريستيان',
+                notes: 'الهيل • خشب الصندل • الفانيلا • السوسن • جوزة الطيب',
+                sprays: 4,
+                method: 'على نقاط النبض',
+                sprayNote: 'الرقبة، المعصمين، خلف الأذن',
+                agingFrom: 30, agingTo: 60,
+                agingNote: 'لتعزيز ثبات العطر ونقاء النوتات العطرية',
+                currentAge: '45 يوم',
+                currentAgeNote: 'جيد',
+                message: 'أنت لا ترتدي عطراً فحسب، بل ترتدي هيبة وحضوراً لا يُنسى.'
+            },
+            {
+                name: 'عطر الفارس',
+                inspired: 'إنترلود',
+                company: 'أمواج',
+                notes: 'اللبان العماني • الزعتر • العنبر • الجلود • المر • الباتشولي',
+                sprays: 5,
+                method: 'متفرقات',
+                sprayNote: 'لأن الأتومايزر صغير',
+                agingFrom: 20, agingTo: 40,
+                agingNote: 'لتعزيز ثبات العطر ونقاء النوتات العطرية',
+                currentAge: '25 يوم',
+                currentAgeNote: 'متوسط',
+                message: 'عطر يجمع بين القوة والأناقة، صُنع لمن يترك أثراً أينما حلّ.'
+            },
+            {
+                name: 'عطر السلطان',
+                inspired: 'توباكو فانيلا',
+                company: 'توم فورد',
+                notes: 'أوراق التبغ • حبوب التونكا • الفانيلا • الكاكاو • الفواكه المجففة',
+                sprays: 5,
+                method: 'متفرقات',
+                sprayNote: 'لأن الأتومايزر صغير',
+                agingFrom: 25, agingTo: 50,
+                agingNote: 'لتعزيز ثبات العطر ونقاء النوتات العطرية',
+                currentAge: '35 يوم',
+                currentAgeNote: 'متوسط',
+                message: 'دفء التوباكو وحلاوة الفانيلا يصنعان لك حضوراً دافئاً لا يُقاوم.'
+            },
+            {
+                name: 'عطر الأمير',
+                inspired: 'أفينتوس',
+                company: 'كريد',
+                notes: 'الأناناس الملكي • البتولا • الكشمش الأسود • البرغموت • خشب الأرز',
+                sprays: 6,
+                method: 'متفرقات',
+                sprayNote: 'لأن الأتومايزر صغير',
+                agingFrom: 15, agingTo: 35,
+                agingNote: 'لتعزيز ثبات العطر ونقاء النوتات العطرية',
+                currentAge: '20 يوم',
+                currentAgeNote: 'متوسط',
+                message: 'عطر النجاح والتميّز، لأولئك الذين يسعون دائماً نحو القمة.'
+            },
+            {
+                name: 'عطر الشيخ',
+                inspired: 'إليسيوم',
+                company: 'روجا دوف',
+                notes: 'الجريب فروت • نجيل الهند • التوت البري • الفلفل الوردي • الأرز',
+                sprays: 4,
+                method: 'على نقاط النبض',
+                sprayNote: 'الرقبة والمعصمين للأداء الأفضل',
+                agingFrom: 30, agingTo: 50,
+                agingNote: 'لتعزيز ثبات العطر ونقاء النوتات العطرية',
+                currentAge: '30 يوم',
+                currentAgeNote: 'متوسط',
+                message: 'عطر يحكي قصة الفخامة والرقي، مصنوع بعناية فائقة لأصحاب الذوق الرفيع.'
+            }
+        ];
+
+        // ─── Custom Presets in LocalStorage ───
+        function getCustomPresets() {
+            try {
+                const stored = localStorage.getItem('perfume_custom_presets');
+                return stored ? JSON.parse(stored) : [];
+            } catch(e) {
+                console.error('LocalStorage read error:', e);
+                return [];
+            }
+        }
+
+        function setCustomPresets(list) {
+            try {
+                localStorage.setItem('perfume_custom_presets', JSON.stringify(list));
+            } catch(e) {
+                console.error('LocalStorage write error:', e);
+            }
+        }
+
+        function getAllPresets() {
+            return [...defaultPresets, ...getCustomPresets()];
+        }
+
+        // ─── Render Presets into Datalist & Storage Status ───
+        function renderPresetsUI() {
+            const datalist = document.getElementById('presets-datalist');
+            if (datalist) {
+                datalist.innerHTML = '';
+                getAllPresets().forEach(p => {
+                    const opt = document.createElement('option');
+                    opt.value = p.name;
+                    datalist.appendChild(opt);
+                });
+            }
+
+            // Update storage count badge
+            const countPill = document.getElementById('storage-count-pill');
+            if (countPill) {
+                countPill.textContent = toAr(getAllPresets().length) + ' عطور';
+            }
+        }
+
+        // ─── Collect Current Card State ───
+        function getCurrentCardState() {
+            return {
+                name: (document.getElementById('input-name').value || '').trim(),
+                inspired: document.getElementById('input-inspired').value,
+                company: document.getElementById('input-company').value,
+                notes: document.getElementById('input-notes').value,
+                sprays: document.getElementById('input-sprays').value,
+                method: document.getElementById('input-spray-method').value,
+                sprayNote: document.getElementById('input-spray-note').value,
+                agingFrom: document.getElementById('input-aging-from').value,
+                agingTo: document.getElementById('input-aging-to').value,
+                agingNote: document.getElementById('input-aging-note').value,
+                currentAge: document.getElementById('input-current-age').value,
+                currentAgeNote: document.getElementById('input-current-age-note').value,
+                message: document.getElementById('input-message').value,
+                brand: document.getElementById('input-brand').value,
+                date: document.getElementById('input-date').value,
+                showDate: document.getElementById('toggle-date').classList.contains('active'),
+                themeIndex: typeof currentThemeIndex === 'number' ? currentThemeIndex : 0,
+                themeId: (themes[currentThemeIndex] && themes[currentThemeIndex].id) || 'pearl-gold',
+                nameSize: document.getElementById('input-name-size') ? document.getElementById('input-name-size').value : 32,
+                msgSize: document.getElementById('input-msg-size') ? document.getElementById('input-msg-size').value : 16,
+                savedAt: new Date().toISOString()
+            };
+        }
+
+        // ─── Apply Card Data to Inputs & Card ───
+        function applyCardData(data, shouldAutoSave = false) {
+            if (!data) return;
+            if (data.name !== undefined) {
+                document.getElementById('input-name').value = data.name;
+                document.getElementById('preset-input').value = data.name;
+            }
+            if (data.inspired !== undefined) document.getElementById('input-inspired').value = data.inspired;
+            if (data.company !== undefined) document.getElementById('input-company').value = data.company;
+            if (data.notes !== undefined) document.getElementById('input-notes').value = data.notes;
+            if (data.sprays !== undefined) document.getElementById('input-sprays').value = data.sprays;
+            if (data.method !== undefined) document.getElementById('input-spray-method').value = data.method;
+            if (data.sprayNote !== undefined) document.getElementById('input-spray-note').value = data.sprayNote;
+            if (data.agingFrom !== undefined) document.getElementById('input-aging-from').value = data.agingFrom;
+            if (data.agingTo !== undefined) document.getElementById('input-aging-to').value = data.agingTo;
+            if (data.agingNote !== undefined) document.getElementById('input-aging-note').value = data.agingNote;
+            if (data.currentAge !== undefined) document.getElementById('input-current-age').value = data.currentAge;
+            if (data.currentAgeNote !== undefined) {
+                if (!['ليس أفضل أداء', 'متوسط', 'جيد'].includes(data.currentAgeNote.trim())) {
+                    const evaluated = evaluateAgingStatus(data.currentAge, data.agingFrom, data.agingTo);
+                    document.getElementById('input-current-age-note').value = evaluated || 'متوسط';
+                } else {
+                    document.getElementById('input-current-age-note').value = data.currentAgeNote;
+                }
+            } else if (data.currentAge !== undefined) {
+                autoEvaluateAgingStatus();
+            }
+            if (data.message !== undefined) document.getElementById('input-message').value = data.message;
+            if (data.brand !== undefined) document.getElementById('input-brand').value = data.brand;
+            if (data.date !== undefined) document.getElementById('input-date').value = data.date;
+            document.getElementById('toggle-date').classList.toggle('active', !!data.showDate);
+            if (data.nameSize !== undefined) {
+                const el = document.getElementById('input-name-size');
+                if (el) {
+                    el.value = data.nameSize;
+                    document.getElementById('name-size-val').textContent = data.nameSize + 'px';
+                    cardEl.style.setProperty('--card-name-size', data.nameSize + 'px');
+                }
+            }
+            if (data.msgSize !== undefined) {
+                const el = document.getElementById('input-msg-size');
+                if (el) {
+                    el.value = data.msgSize;
+                    document.getElementById('msg-size-val').textContent = data.msgSize + 'px';
+                    const msgP = cardEl.querySelector('.card-message p');
+                    if (msgP) msgP.style.fontSize = data.msgSize + 'px';
+                }
+            }
+            if (typeof data.themeIndex === 'number' && data.themeIndex >= 0 && data.themeIndex < themes.length) {
+                selectTheme(data.themeIndex, false);
+            } else if (data.themeId) {
+                const idx = themes.findIndex(t => t.id === data.themeId);
+                if (idx >= 0) selectTheme(idx, false);
+            }
+
+            updateCard(shouldAutoSave);
+        }
+
+        // ─── Auto-Save Debouncer & Performer ───
+        let autoSaveTimer = null;
+        function triggerAutoSave() {
+            const dot = document.getElementById('status-dot');
+            if (dot) dot.classList.add('saving');
+            clearTimeout(autoSaveTimer);
+            autoSaveTimer = setTimeout(performAutoSave, 400);
+        }
+
+        function performAutoSave() {
+            const cardState = getCurrentCardState();
+            try {
+                // 1. Save active card session to LocalStorage
+                localStorage.setItem('perfume_active_session', JSON.stringify(cardState));
+
+                // 2. If perfume has a valid name, auto-save/update it in the saved presets database
+                if (cardState.name && cardState.name.length >= 2) {
+                    let custom = getCustomPresets();
+                    const existingIdx = custom.findIndex(p => p.name.trim().toLowerCase() === cardState.name.toLowerCase());
+                    if (existingIdx >= 0) {
+                        custom[existingIdx] = { ...custom[existingIdx], ...cardState };
+                    } else {
+                        // Check if it's identical to default preset without edits
+                        const isDefault = defaultPresets.some(p => p.name.trim().toLowerCase() === cardState.name.toLowerCase());
+                        if (!isDefault) {
+                            custom.unshift(cardState);
+                        }
+                    }
+                    setCustomPresets(custom);
+                    renderPresetsUI();
+                }
+
+                // Update visual status bar
+                const dot = document.getElementById('status-dot');
+                if (dot) dot.classList.remove('saving');
+
+                const statusText = document.getElementById('storage-status-text');
+                if (statusText) {
+                    const now = new Date();
+                    const m = String(now.getMinutes()).padStart(2, '0');
+                    const s = String(now.getSeconds()).padStart(2, '0');
+                    statusText.innerHTML = `تم الحفظ تلقائياً في LocalStorage (<bdi>${toAr(now.getHours())}:${toAr(m)}:${toAr(s)}</bdi>)`;
+                }
+            } catch(e) {
+                console.error('AutoSave Error:', e);
+            }
+        }
+
+        // ─── Load Preset by Name ───
+        function loadPreset(name) {
+            const all = getAllPresets();
+            const p = all.find(item => item.name.trim().toLowerCase() === name.trim().toLowerCase());
+            if (!p) return false;
+
+            applyCardData(p, true);
+            showToast('✅ تم تحميل عطر: ' + p.name);
+            return true;
+        }
+
+        // ─── Event: When user types in Preset Input ───
+        function onPresetInputChanged() {
+            const inputVal = document.getElementById('preset-input').value.trim();
+            if (!inputVal) return;
+
+            // Check if exact match to an existing preset
+            const found = getAllPresets().find(p => p.name.trim().toLowerCase() === inputVal.toLowerCase());
+            if (found) {
+                loadPreset(found.name);
+            } else {
+                // User typing a new name -> sync with input-name and card
+                document.getElementById('input-name').value = inputVal;
+                updateCard();
+            }
+        }
+
+        // ─── Event: When user types in Perfume Name Input ───
+        function onPerfumeNameInput(val) {
+            document.getElementById('preset-input').value = val;
+            updateCard();
+        }
+
+        // ─── Save Current as Preset (Manual Click) ───
+        function saveCurrentAsPreset() {
+            const cardState = getCurrentCardState();
+            const name = cardState.name;
+            if (!name) {
+                showToast('⚠️ يرجى إدخال اسم العطر أولاً لحفظه');
+                document.getElementById('preset-input').focus();
+                return;
+            }
+
+            let custom = getCustomPresets();
+            const existingIdx = custom.findIndex(p => p.name.trim().toLowerCase() === name.toLowerCase());
+            if (existingIdx >= 0) {
+                custom[existingIdx] = cardState;
+                showToast('🔄 تم تحديث العطر في LocalStorage: ' + name);
+            } else {
+                custom.unshift(cardState);
+                showToast('💾 تم حفظ العطر في LocalStorage: ' + name);
+            }
+
+            setCustomPresets(custom);
+            localStorage.setItem('perfume_active_session', JSON.stringify(cardState));
+            renderPresetsUI();
+            performAutoSave();
+        }
+
+        // ─── Delete Preset ───
+        function deleteCurrentPreset() {
+            const name = (document.getElementById('preset-input').value || document.getElementById('input-name').value || '').trim();
+            if (!name) {
+                showToast('⚠️ حدد أو اكتب اسم العطر المراد حذفه');
+                return;
+            }
+
+            // Check if default
+            const isDefault = defaultPresets.some(p => p.name.trim().toLowerCase() === name.toLowerCase());
+            if (isDefault) {
+                showToast('ℹ️ هذا عطر أساسي، تمت استعادة إعداداته الافتراضية');
+                let custom = getCustomPresets().filter(p => p.name.trim().toLowerCase() !== name.toLowerCase());
+                setCustomPresets(custom);
+                renderPresetsUI();
+                return;
+            }
+
+            let custom = getCustomPresets();
+            const filtered = custom.filter(p => p.name.trim().toLowerCase() !== name.toLowerCase());
+            if (filtered.length === custom.length) {
+                showToast('⚠️ لم يتم العثور على هذا العطر في المحفوظات');
+                return;
+            }
+
+            setCustomPresets(filtered);
+            renderPresetsUI();
+            document.getElementById('preset-input').value = '';
+            showToast('🗑️ تم حذف العطر من LocalStorage: ' + name);
+        }
+
+        // ─── Toggle Section ───
+        function toggleSection(header) {
+            header.closest('.panel-section').classList.toggle('collapsed');
+        }
+
+        // ─── Toggle Switch ───
+        function toggleSwitch(el) {
+            el.classList.toggle('active');
+        }
+
+        // ─── Update Card ───
+        function updateCard(shouldAutoSave = true) {
+            const name = document.getElementById('input-name').value;
+            const inspired = document.getElementById('input-inspired').value;
+            const company = document.getElementById('input-company').value;
+            const notes = document.getElementById('input-notes').value;
+            const sprays = document.getElementById('input-sprays').value;
+            const method = document.getElementById('input-spray-method').value;
+            const sprayNote = document.getElementById('input-spray-note').value;
+            const agingFrom = document.getElementById('input-aging-from').value;
+            const agingTo = document.getElementById('input-aging-to').value;
+            const agingNote = document.getElementById('input-aging-note').value;
+            const currentAge = document.getElementById('input-current-age').value;
+            const currentAgeNote = document.getElementById('input-current-age-note').value;
+            const message = document.getElementById('input-message').value;
+            const brand = document.getElementById('input-brand').value;
+            const dateVal = document.getElementById('input-date').value;
+            const showDate = document.getElementById('toggle-date').classList.contains('active');
+
+            // Update card elements using <bdi> to protect Arabic text shaping & numbers
+            document.getElementById('card-name').innerHTML = `<bdi>${escapeHtml(name)}</bdi>`;
+            document.getElementById('card-inspired').innerHTML = `<bdi>${escapeHtml(inspired)}</bdi>`;
+            document.getElementById('card-company').innerHTML = `<bdi>${escapeHtml(company)}</bdi>`;
+            // Notes strip (show only if filled)
+            const notesWrap = document.getElementById('card-notes-wrap');
+            if (notes && notes.trim()) {
+                notesWrap.style.display = 'flex';
+                document.getElementById('card-notes').innerHTML = `<bdi>${escapeHtml(notes)}</bdi>`;
+            } else {
+                notesWrap.style.display = 'none';
+            }
+
+            document.getElementById('card-sprays').innerHTML = `<bdi>${toAr(sprays)} ${escapeHtml(method)}</bdi>`;
+            document.getElementById('card-spray-note').innerHTML = `<bdi>${escapeHtml(sprayNote)}</bdi>`;
+            document.getElementById('card-aging').innerHTML = `<bdi>${toAr(agingFrom)} — ${toAr(agingTo)} يوم</bdi>`;
+            document.getElementById('card-aging-note').innerHTML = `<bdi>${escapeHtml(agingNote)}</bdi>`;
+            
+            // Format current age (append 'يوم' if user entered a bare number)
+            let formattedAge = String(currentAge || '').trim();
+            if (/^\d+$/.test(formattedAge) || /^[٠-٩]+$/.test(formattedAge)) {
+                formattedAge += ' يوم';
+            }
+            document.getElementById('card-current-age').innerHTML = `<bdi>${toAr(escapeHtml(formattedAge))}</bdi>`;
+
+            // Aging status badge styling
+            const cleanNote = (currentAgeNote || '').trim();
+            let statusBadgeClass = 'status-default';
+            if (cleanNote === 'ليس أفضل أداء') {
+                statusBadgeClass = 'status-warn';
+            } else if (cleanNote === 'متوسط') {
+                statusBadgeClass = 'status-mid';
+            } else if (cleanNote === 'جيد') {
+                statusBadgeClass = 'status-good';
+            }
+            document.getElementById('card-current-age-note').innerHTML = `<bdi class="age-status-badge ${statusBadgeClass}">${escapeHtml(currentAgeNote)}</bdi>`;
+            updateStatusPills(currentAgeNote);
+
+            document.getElementById('card-message').innerHTML = `<bdi>${escapeHtml(message)}</bdi>`;
+            const brandEl = document.getElementById('card-brand');
+            if (brandEl) {
+                brandEl.innerHTML = `<bdi>${escapeHtml(brand)}</bdi>`;
+            }
+            document.getElementById('card-signature').innerHTML = `<bdi>— ${escapeHtml(brand)} —</bdi>`;
+
+            // Date
+            const dateEl = document.getElementById('card-date');
+            if (dateEl) {
+                if (showDate && dateVal) {
+                    dateEl.innerHTML = `<bdi>${formatDate(dateVal)}</bdi>`;
+                    dateEl.style.display = '';
+                } else {
+                    dateEl.innerHTML = '';
+                    dateEl.style.display = 'none';
+                }
+            }
+
+            // Trigger auto-save to LocalStorage
+            if (shouldAutoSave !== false) {
+                triggerAutoSave();
+            }
+        }
+
+        // ─── Arabic Numerals & Days Parser ───
+        function parseDaysNumber(str) {
+            if (str === null || str === undefined) return null;
+            const normalized = String(str).replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d));
+            const match = normalized.match(/\d+/);
+            return match ? parseInt(match[0], 10) : null;
+        }
+
+        // ─── Dynamic Aging Status Evaluation ───
+        // إذا كان عدد الأيام للعمر ليس من الفترة المحددة للتعتيق: "ليس أفضل أداء"
+        // إذا كان الأيام أكثر أو في الرينج: "متوسط" أو "جيد"
+        function evaluateAgingStatus(currentAgeStr, fromStr, toStr) {
+            const cur = parseDaysNumber(currentAgeStr);
+            const min = parseDaysNumber(fromStr);
+            const max = parseDaysNumber(toStr);
+
+            if (cur === null) return null;
+
+            const minDays = min !== null ? min : 0;
+            const maxDays = max !== null ? Math.max(max, minDays) : minDays;
+
+            if (cur < minDays) {
+                return 'ليس أفضل أداء';
+            } else if (maxDays > minDays && cur < (minDays + (maxDays - minDays) * 0.5)) {
+                return 'متوسط';
+            } else {
+                return 'جيد';
+            }
+        }
+
+        function autoEvaluateAgingStatus() {
+            const curAgeInput = document.getElementById('input-current-age');
+            const fromInput = document.getElementById('input-aging-from');
+            const toInput = document.getElementById('input-aging-to');
+            const noteInput = document.getElementById('input-current-age-note');
+            if (!curAgeInput || !fromInput || !toInput || !noteInput) return;
+
+            const evalResult = evaluateAgingStatus(curAgeInput.value, fromInput.value, toInput.value);
+            if (evalResult) {
+                noteInput.value = evalResult;
+                updateStatusPills(evalResult);
+            }
+        }
+
+        function onCurrentAgeInput() {
+            autoEvaluateAgingStatus();
+            updateCard();
+        }
+
+        function onAgingRangeChange() {
+            autoEvaluateAgingStatus();
+            updateCard();
+        }
+
+        function onCurrentAgeNoteInput() {
+            const val = document.getElementById('input-current-age-note').value;
+            updateStatusPills(val);
+            updateCard();
+        }
+
+        function setAgingStatus(status) {
+            const noteInput = document.getElementById('input-current-age-note');
+            if (noteInput) {
+                noteInput.value = status;
+                updateStatusPills(status);
+                updateCard();
+            }
+        }
+
+        function updateStatusPills(statusText) {
+            const clean = (statusText || '').trim();
+            const pWarn = document.getElementById('pill-warn');
+            const pMid = document.getElementById('pill-mid');
+            const pGood = document.getElementById('pill-good');
+
+            if (pWarn) pWarn.classList.toggle('active', clean === 'ليس أفضل أداء');
+            if (pMid) pMid.classList.toggle('active', clean === 'متوسط');
+            if (pGood) pGood.classList.toggle('active', clean === 'جيد');
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        // ══════════════ 8 RADICALLY DISTINCT LUXURY CARD THEMES ══════════════
+        const themes = [
+            {
+                id: 'charismatic', className: 'theme-charismatic', name: 'كريزماتك', icon: '✦', dotColor: '#c99a43',
+                subtitle: 'بطاقة عطر بتوقيع كاريزماتي فاخر', guideTitle: '✦ إرشادات العطر والأداء ✦', notesBadge: 'البصمة العطرية:',
+                ornamentLeft: '✦ ───────', ornamentRight: '─────── ✦', divider: '✦'
+            },
+            {
+                id: 'fresh-breeze', className: 'theme-fresh-breeze', name: 'فريش منعش', icon: '◌', dotColor: '#087c83',
+                subtitle: 'انتعاش نظيف بنفحات حيوية', guideTitle: '◌ دليل الاستخدام والانتعاش ◌', notesBadge: 'النوتات المنعشة:',
+                ornamentLeft: '◌ ───────', ornamentRight: '─────── ◌', divider: '◌'
+            },
+            {
+                id: 'bold-noir', className: 'theme-bold-noir', name: 'قوي وشيك وخطير', icon: '◆', dotColor: '#57e7c6',
+                subtitle: 'إصدار شبابي جريء بحضور لا يُنسى', guideTitle: '◆ إرشادات الأداء القوي ◆', notesBadge: 'النوتات الجريئة:',
+                ornamentLeft: '◆ ───────', ornamentRight: '─────── ◆', divider: '◆'
+            },
+            {
+                id: 'soft-calm', className: 'theme-soft-calm', name: 'ناعم وجميل وهادئ', icon: '❋', dotColor: '#806f9c',
+                subtitle: 'بطاقة رقيقة لتجربة عطرية هادئة', guideTitle: '❋ إرشادات الاستخدام برفق ❋', notesBadge: 'النوتات الناعمة:',
+                ornamentLeft: '❋ ───────', ornamentRight: '─────── ❋', divider: '❋'
+            },
+            {
+                id: 'feminine-rose', className: 'theme-feminine-rose', name: 'نسائي جميل', icon: '❀', dotColor: '#b45170',
+                subtitle: 'لمسة أنثوية جميلة من الورد والحرير', guideTitle: '❀ إرشادات العناية بالعطر ❀', notesBadge: 'النوتات الزهرية:',
+                ornamentLeft: '❀ ───────', ornamentRight: '─────── ❀', divider: '❀'
+            },
+            {
+                id: 'classic-ivory', className: 'theme-classic-ivory', name: 'كلاسيكي عاجي', icon: '⚜', dotColor: '#7b5228',
+                subtitle: 'بطاقة العطر • دليل الاستخدام والتعتيق', guideTitle: '⚜ إرشادات الاستخدام والتعتيق ⚜', notesBadge: 'النوتات العطرية:',
+                ornamentLeft: '⚜ ───────', ornamentRight: '─────── ⚜', divider: '⚜'
+            },
+            {
+                id: 'classic-navy', className: 'theme-classic-navy', name: 'كحلي ملكي', icon: '✦', dotColor: '#d6b368',
+                subtitle: 'بطاقة العطر • دليل الاستخدام والتعتيق', guideTitle: '✦ إرشادات الاستخدام والتعتيق ✦', notesBadge: 'النوتات العطرية:',
+                ornamentLeft: '✦ ───────', ornamentRight: '─────── ✦', divider: '✦'
+            },
+            {
+                id: 'classic-burgundy', className: 'theme-classic-burgundy', name: 'خمري كلاسيكي', icon: '◆', dotColor: '#d9af72',
+                subtitle: 'بطاقة العطر • دليل الاستخدام والتعتيق', guideTitle: '◆ إرشادات الاستخدام والتعتيق ◆', notesBadge: 'النوتات العطرية:',
+                ornamentLeft: '◆ ───────', ornamentRight: '─────── ◆', divider: '◆'
+            },
+            {
+                id: 'classic-monochrome', className: 'theme-classic-monochrome', name: 'أبيض وأسود كلاسيكي', icon: '—', dotColor: '#171717',
+                subtitle: 'بطاقة العطر • دليل الاستخدام والتعتيق', guideTitle: '— إرشادات الاستخدام والتعتيق —', notesBadge: 'النوتات العطرية:',
+                ornamentLeft: '— — — — —', ornamentRight: '— — — — —', divider: '—'
+            },
+            {
+                id: 'black-rounded', className: 'theme-black-rounded', name: 'أسود جريء', icon: '●', dotColor: '#151515',
+                subtitle: 'بطاقة العطر • دليل الاستخدام والتعتيق', guideTitle: '● إرشادات الاستخدام والتعتيق ●', notesBadge: 'النوتات العطرية:',
+                ornamentLeft: '● ───────', ornamentRight: '─────── ●', divider: '●'
+            }
+        ];
+
+        let currentThemeIndex = 0;
+        const cardEl = document.getElementById('perfume-card');
+
+        function closeMobileDrawers() {
+            document.querySelector('.bottom-theme-dock')?.classList.remove('drawer-open');
+            document.querySelector('.editor-deck-wrapper')?.classList.remove('drawer-open');
+            document.getElementById('drawer-backdrop')?.classList.remove('visible');
+            document.body.classList.remove('drawer-open');
+        }
+
+        function toggleMobileDrawer(name) {
+            if (!window.matchMedia('(max-width: 768px)').matches) return;
+            const selector = name === 'themes' ? '.bottom-theme-dock' : '.editor-deck-wrapper';
+            const drawer = document.querySelector(selector);
+            const wasOpen = drawer?.classList.contains('drawer-open');
+            closeMobileDrawers();
+            if (!wasOpen && drawer) {
+                drawer.classList.add('drawer-open');
+                document.getElementById('drawer-backdrop')?.classList.add('visible');
+                document.body.classList.add('drawer-open');
+            }
+        }
+
+        document.addEventListener('keydown', event => {
+            if (event.key === 'Escape') closeMobileDrawers();
+        });
+
+        function initThemesUI() {
+            const grid = document.getElementById('theme-grid');
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            themes.forEach((theme, idx) => {
+                const chip = document.createElement('div');
+                chip.className = 'theme-chip' + (idx === currentThemeIndex ? ' active' : '');
+                chip.onclick = () => selectTheme(idx);
+
+                const dot = document.createElement('span');
+                dot.className = 'theme-chip-dot';
+                dot.style.background = theme.dotColor;
+
+                const text = document.createElement('span');
+                text.className = 'theme-chip-text';
+                text.textContent = theme.icon + ' ' + theme.name;
+
+                chip.appendChild(dot);
+                chip.appendChild(text);
+                grid.appendChild(chip);
+            });
+        }
+
+        function selectTheme(index, shouldAutoSave = true) {
+            if (index < 0) index = themes.length - 1;
+            if (index >= themes.length) index = 0;
+            currentThemeIndex = index;
+            const theme = themes[index];
+
+            // Remove previous theme classes & add current
+            themes.forEach(t => cardEl.classList.remove(t.className));
+            cardEl.classList.add(theme.className);
+
+            // Update ornaments
+            const oLeft = document.getElementById('card-ornament-left');
+            const oRight = document.getElementById('card-ornament-right');
+            const oDiv = document.getElementById('card-divider-ornament');
+            if (oLeft) oLeft.textContent = theme.ornamentLeft;
+            if (oRight) oRight.textContent = theme.ornamentRight;
+            if (oDiv) oDiv.textContent = theme.divider;
+
+            // Update dynamic text badges & titles
+            const subtitleEl = document.getElementById('card-subtitle');
+            const guideTitleEl = document.getElementById('card-guide-title');
+            const notesBadgeEl = document.getElementById('card-notes-badge');
+            if (subtitleEl && theme.subtitle) subtitleEl.innerHTML = `<bdi>${theme.subtitle}</bdi>`;
+            if (guideTitleEl && theme.guideTitle) guideTitleEl.innerHTML = `<bdi>${theme.guideTitle}</bdi>`;
+            if (notesBadgeEl && theme.notesBadge) notesBadgeEl.innerHTML = `<bdi>${theme.notesBadge}</bdi>`;
+
+            // Update counter badge & name
+            const badgeEl = document.getElementById('theme-idx-badge');
+            const nameEl = document.getElementById('theme-name-display');
+            if (badgeEl) badgeEl.textContent = toAr(index + 1) + ' / ' + toAr(themes.length);
+            if (nameEl) nameEl.textContent = theme.icon + ' ' + theme.name;
+
+            // Update active chips
+            document.querySelectorAll('.theme-chip').forEach((chip, i) => {
+                chip.classList.toggle('active', i === index);
+            });
+
+            // Trigger auto-save
+            if (shouldAutoSave && typeof triggerAutoSave === 'function') {
+                triggerAutoSave();
+            }
+
+            if (window.matchMedia('(max-width: 768px)').matches) {
+                closeMobileDrawers();
+            }
+        }
+
+        function nextTheme() {
+            selectTheme(currentThemeIndex + 1);
+            showToast('✨ نمط: ' + themes[currentThemeIndex].name);
+        }
+
+        function prevTheme() {
+            selectTheme(currentThemeIndex - 1);
+            showToast('✨ نمط: ' + themes[currentThemeIndex].name);
+        }
+
+        // ══════════════ KEYBOARD CYCLING LISTENER ══════════════
+        document.addEventListener('keydown', function(e) {
+            // Do not intercept if user is typing in form inputs
+            const activeTag = document.activeElement ? document.activeElement.tagName : '';
+            if (['INPUT', 'TEXTAREA', 'SELECT'].includes(activeTag)) {
+                return;
+            }
+
+            if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                e.preventDefault();
+                nextTheme();
+            } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                e.preventDefault();
+                prevTheme();
+            } else if (['1', '2', '3', '4', '5', '6', '7', '8'].includes(e.key)) {
+                e.preventDefault();
+                selectTheme(parseInt(e.key) - 1);
+                showToast('✨ نمط: ' + themes[currentThemeIndex].name);
+            }
+        });
+
+        // ─── Font Size Controls ───
+        function updateNameSize() {
+            const val = document.getElementById('input-name-size').value;
+            document.getElementById('name-size-val').textContent = val + 'px';
+            cardEl.style.setProperty('--card-name-size', val + 'px');
+            if (typeof triggerAutoSave === 'function') triggerAutoSave();
+        }
+
+        function updateMsgSize() {
+            const val = document.getElementById('input-msg-size').value;
+            document.getElementById('msg-size-val').textContent = val + 'px';
+            cardEl.querySelector('.card-message p').style.fontSize = val + 'px';
+            if (typeof triggerAutoSave === 'function') triggerAutoSave();
+        }
+
+        // ─── Zoom Controls ───
+        let currentZoom = 1;
+
+        function zoomIn() {
+            currentZoom = Math.min(2.5, currentZoom + 0.1);
+            applyZoom();
+        }
+
+        function zoomOut() {
+            currentZoom = Math.max(0.4, currentZoom - 0.1);
+            applyZoom();
+        }
+
+        function zoomReset() {
+            currentZoom = 1;
+            applyZoom();
+        }
+
+        function applyZoom() {
+            cardEl.style.transform = `scale(${currentZoom})`;
+            document.getElementById('zoom-label').textContent = Math.round(currentZoom * 100) + '%';
+            syncMobilePreview();
+        }
+
+        function syncMobilePreview() {
+            const canvas = document.querySelector('.canvas-area');
+            const wrapper = document.querySelector('.card-wrapper');
+            const sizeLabel = document.querySelector('.card-size-label');
+            if (!canvas || !wrapper) return;
+
+            if (!window.matchMedia('(max-width: 768px)').matches) {
+                cardEl.style.zoom = '';
+                wrapper.style.width = '';
+                wrapper.style.height = '';
+                if (sizeLabel) sizeLabel.style.transform = '';
+                return;
+            }
+
+            // Fit the default view exactly inside the phone, then make the
+            // wrapper wider only when the user zooms so it can be swiped sideways.
+            const baseZoom = Math.min(0.5, Math.max(0.38, (canvas.clientWidth - 4) / 720));
+            cardEl.style.zoom = String(baseZoom);
+            const previewWidth = 720 * baseZoom * currentZoom;
+            wrapper.style.width = Math.max(canvas.clientWidth, previewWidth) + 'px';
+            const extraHeight = 430 * baseZoom * (currentZoom - 1);
+            wrapper.style.height = Math.ceil(430 * baseZoom + extraHeight + 24) + 'px';
+            if (sizeLabel) sizeLabel.style.transform = `translateY(${extraHeight}px)`;
+        }
+
+        // ─── Export library recovery ───
+        // The page can be opened directly as a local file, where a CDN may fail to load
+        // on first attempt. Load a second trusted source before declaring export unavailable.
+        function loadExportScript(url) {
+            return new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = url;
+                script.async = true;
+                script.onload = resolve;
+                script.onerror = () => reject(new Error('تعذر تحميل مكتبة التصدير'));
+                document.head.appendChild(script);
+            });
+        }
+
+        async function ensureExportLibraries() {
+            if (!window.html2canvas) {
+                await loadExportScript('https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js');
+            }
+            if (!window.html2canvas) throw new Error('مكتبة تحويل البطاقة إلى صورة غير متاحة. تحقق من اتصال الإنترنت ثم أعد المحاولة.');
+        }
+
+        function exportErrorMessage(err) {
+            const message = err && err.message ? err.message : '';
+            return message ? '❌ فشل التصدير: ' + message : '❌ فشل التصدير. أعد المحاولة.';
+        }
+
+        async function captureCardCanvas(omitImages = false) {
+            // 1. Wait for web fonts (Tajawal, Amiri) & images to fully render
+            await document.fonts.ready;
+            const cardImgs = Array.from(cardEl.querySelectorAll('img'));
+            await Promise.all(cardImgs.map(img => {
+                if (img.complete && img.naturalHeight !== 0) return Promise.resolve();
+                return new Promise(res => { img.onload = img.onerror = res; });
+            }));
+
+            // 2. Create an isolated render surface. Keep it inside the document bounds:
+            // some browsers return an empty canvas when the target is far off-screen.
+            const staging = document.createElement('div');
+            staging.style.position = 'absolute';
+            staging.style.left = '0';
+            staging.style.top = '0';
+            staging.style.width = '720px';
+            staging.style.height = '430px';
+            staging.style.overflow = 'hidden';
+            staging.style.zIndex = '-99999';
+            staging.style.pointerEvents = 'none';
+            staging.style.margin = '0';
+            staging.style.padding = '0';
+            staging.style.border = 'none';
+            staging.style.background = 'transparent';
+
+            // 3. Clone the card node
+            const clone = cardEl.cloneNode(true);
+            clone.style.zoom = '1';
+            clone.style.transform = 'none';
+            clone.style.transition = 'none';
+            clone.style.animation = 'none';
+            clone.style.boxShadow = 'none';
+            clone.style.margin = '0';
+
+            // Local image files can taint a canvas in browsers that open this page
+            // through file://. This fallback preserves every card detail except such images.
+            if (omitImages) {
+                clone.querySelectorAll('img').forEach(img => { img.style.visibility = 'hidden'; });
+            }
+
+            // 4. Strictly enforce zero letter-spacing & Arabic ligature features
+            clone.querySelectorAll('*').forEach(node => {
+                node.style.letterSpacing = 'normal';
+                node.style.wordSpacing = 'normal';
+                node.style.fontFeatureSettings = '"liga" 1, "calt" 1, "kern" 1';
+                node.style.webkitFontSmoothing = 'antialiased';
+                node.style.textRendering = 'optimizeLegibility';
+            });
+
+            staging.appendChild(clone);
+            document.body.appendChild(staging);
+
+            // Force layout reflow
+            void clone.offsetHeight;
+
+            try {
+                const canvas = await html2canvas(clone, {
+                    scale: 3,
+                    useCORS: true,
+                    allowTaint: false,
+                    backgroundColor: null,
+                    logging: false,
+                    width: 720,
+                    height: 430,
+                    windowWidth: 720,
+                    windowHeight: 430,
+                    scrollX: 0,
+                    scrollY: 0
+                });
+
+                document.body.removeChild(staging);
+                return canvas;
+            } catch(err) {
+                if (document.body.contains(staging)) {
+                    document.body.removeChild(staging);
+                }
+                throw err;
+            }
+        }
+
+        // ─── Export PNG ───
+        function canvasToPngBlob(canvas) {
+            return new Promise((resolve, reject) => {
+                try {
+                    canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('تعذر إنشاء ملف PNG')), 'image/png');
+                } catch (err) {
+                    reject(err);
+                }
+            });
+        }
+
+        async function exportPNG() {
+            const btn = document.getElementById('btn-png');
+            btn.classList.add('loading');
+            btn.disabled = true;
+
+            // Guarantee current state is saved to LocalStorage
+            if (typeof performAutoSave === 'function') {
+                performAutoSave();
+            }
+
+            try {
+                await ensureExportLibraries();
+                let canvas = await captureCardCanvas();
+                const fileName = (document.getElementById('input-name').value || 'perfume_card').trim();
+                let blob;
+                try {
+                    blob = await canvasToPngBlob(canvas);
+                } catch (canvasError) {
+                    // A tainted local logo must never prevent the user from exporting the card.
+                    canvas = await captureCardCanvas(true);
+                    blob = await canvasToPngBlob(canvas);
+                }
+
+                const link = document.createElement('a');
+                const objectUrl = URL.createObjectURL(blob);
+                link.download = fileName + '.png';
+                link.href = objectUrl;
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+                setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
+                showToast('✅ تم حفظ العطر في LocalStorage والصورة كـ PNG');
+            } catch (err) {
+                console.error(err);
+                showToast(exportErrorMessage(err));
+            }
+
+            btn.classList.remove('loading');
+            btn.disabled = false;
+        }
+
+        // ─── Toast ───
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            clearTimeout(toast._timeout);
+            toast._timeout = setTimeout(() => toast.classList.remove('show'), 2500);
+        }
+
+        // ─── Initial Startup ───
+        initThemesUI();
+        renderPresetsUI();
+
+        // Restore active session from LocalStorage if available
+        let sessionRestored = false;
+        try {
+            const savedSession = localStorage.getItem('perfume_active_session');
+            if (savedSession) {
+                const data = JSON.parse(savedSession);
+                if (data && data.name) {
+                    data.showDate = false;
+                    applyCardData(data, false);
+                    sessionRestored = true;
+                    showToast('🔄 تم استرجاع تصميمك المحفوظ في LocalStorage');
+                }
+            }
+        } catch(e) {
+            console.error('Session restore error:', e);
+        }
+
+        if (!sessionRestored) {
+            loadPreset('عطر صدام');
+        }
+
+        syncMobilePreview();
+        window.addEventListener('resize', syncMobilePreview);
+    </script>
+    <script>
+        // file:// blocks manifests and service workers. Enable PWA features only
+        // when hosted (GitHub Pages provides HTTPS automatically).
+        const isHosted = location.protocol === 'https:' || location.protocol === 'http:';
+        if (isHosted) {
+            const manifest = document.createElement('link');
+            manifest.rel = 'manifest';
+            manifest.href = './manifest.webmanifest';
+            document.head.appendChild(manifest);
+        }
+        if (isHosted && 'serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js').catch(error => {
+                    console.warn('تعذر تفعيل وضع العمل دون اتصال:', error);
+                });
+            });
+        }
+    </script>
+</body>
+</html>
